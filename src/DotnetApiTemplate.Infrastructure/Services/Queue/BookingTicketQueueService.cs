@@ -58,6 +58,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
             Status = BookingOrderStatus.Payment,
             IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
             IdEvent = getBookingMessage.IdEvent,
+            DateEvent = getBookingMessage.DateEvent,
           };
           await dbContext.InsertAsync(newBooking, cancellationToken);
           await dbContext.SaveChangesAsync(cancellationToken);
@@ -67,6 +68,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
           {
             IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
             Status = newBooking.Status,
+            OrderCode = newBooking.Id,
           };
 
           SendQueueRequest _paramQueue = new SendQueueRequest
@@ -91,7 +93,6 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
         {
           IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
           Status = BookingOrderStatus.Filed,
-
         };
 
         SendQueueRequest _paramQueue = new SendQueueRequest

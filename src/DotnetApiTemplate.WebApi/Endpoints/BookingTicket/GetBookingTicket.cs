@@ -57,6 +57,8 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
             BookingTicketId = e.Id,
             NameEvent = e.Event.Name,
             Status = e.Status.ToString(),
+            CountTicket = e.CountTicket,
+            DateEvent = e.DateEvent,
           })
           .Skip(request.CalculateSkip())
           .ToList();
@@ -66,7 +68,9 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
          {
            IdBookingTicket = e.BookingTicketId,
            NameEvent = e.NameEvent,
+           CountTicket = e.CountTicket,
            Status = e.Status.ToString(),
+           DateEvent = e.DateEvent
          })
          .ToList();
 

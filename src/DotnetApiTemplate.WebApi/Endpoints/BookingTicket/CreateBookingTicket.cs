@@ -74,7 +74,9 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
         IdUser = request.IdUser,
         CountTicket = request.CountTicket,
         Status = BookingOrderStatus.Process,
+        DateEvent = request.DateEvent,
       };
+
       await _dbContext.InsertAsync(newBooking, cancellationToken);
       await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -89,7 +91,8 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
                  Email = e.User.Email,
                  Name = e.User.FullName,
                  Phone = e.User.Phone,
-                 IdBookingTicketBroker = e.Id
+                 IdBookingTicketBroker = e.Id,
+                 DateEvent = e.DateEvent,
                })
                .FirstOrDefaultAsync(cancellationToken);
 

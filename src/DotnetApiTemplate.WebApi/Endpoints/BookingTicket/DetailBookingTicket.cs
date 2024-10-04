@@ -50,6 +50,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
         NameEvent = bookingTicket.EventBroker.Name,
         CountTicket = bookingTicket.CountTicket,
         Status = bookingTicket.Status.ToString(),
+        DateEvent = bookingTicket.DateEvent,
       };
 
       return response;

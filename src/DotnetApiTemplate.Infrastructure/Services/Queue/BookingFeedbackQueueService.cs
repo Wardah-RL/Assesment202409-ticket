@@ -37,6 +37,8 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
         {
           dbContext.AttachEntity(getBookingTicketBroker);
           getBookingTicketBroker.Status = getBookingMessage.Status;
+          getBookingTicketBroker.OrderCode = getBookingMessage.OrderCode;
+          
           await dbContext.SaveChangesAsync(cancellationToken);
         }
         return true;

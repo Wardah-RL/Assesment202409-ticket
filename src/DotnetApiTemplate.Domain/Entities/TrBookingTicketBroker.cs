@@ -22,7 +22,7 @@ namespace DotnetApiTemplate.Domain.Entities
     public int CountTicket { get; set; }
     public BookingOrderStatus Status { get; set; }
     public string? Note { get; set; }
-    public Guid? CodeBooking {  get; set; }
+    public Guid? OrderCode {  get; set; }
     public DateTime DateEvent {  get; set; }
   }
 }
