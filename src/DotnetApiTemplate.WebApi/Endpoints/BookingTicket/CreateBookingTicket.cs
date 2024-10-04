@@ -57,6 +57,12 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
 
       if (getEvent != null)
       {
+        if (getEvent.CountTicket == 0)
+          throw new Exception("Ticket is sold out");
+
+        if (getEvent.CountTicket < request.CountTicket)
+          throw new Exception($"Ticket already is {getEvent.CountTicket}");
+
         _dbContext.AttachEntity(getEvent);
         getEvent.CountTicket = getEvent.CountTicket - request.CountTicket;
       }
@@ -87,14 +93,14 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
                })
                .FirstOrDefaultAsync(cancellationToken);
 
-      ////SendQueueRequest _paramQueue = new SendQueueRequest
-      ////{
-      ////  Message = JsonSerializer.Serialize(getBooking),
-      ////  Scenario = "BookingTicket",
-      ////  QueueName = "bookingticket"
-      ////};
+      SendQueueRequest _paramQueue = new SendQueueRequest
+      {
+        Message = JsonSerializer.Serialize(getBooking),
+        Scenario = "BookingTicket",
+        QueueName = "bookingticket"
+      };
 
-      //_emailQueue.Execute(_paramQueue);
+      _emailQueue.Execute(_paramQueue);
       #endregion
 
       return NoContent();

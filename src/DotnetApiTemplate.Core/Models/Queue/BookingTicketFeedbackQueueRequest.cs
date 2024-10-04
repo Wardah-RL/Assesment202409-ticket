@@ -11,5 +11,6 @@ namespace DotnetApiTemplate.Core.Models.Queue
   {
     public Guid IdBookingTicketBroker { get; set; }
     public BookingOrderStatus Status { get; set; }
+    public string? Note { get; set; }
   }
 }

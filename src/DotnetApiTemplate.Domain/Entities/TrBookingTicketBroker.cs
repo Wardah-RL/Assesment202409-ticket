@@ -21,5 +21,6 @@ namespace DotnetApiTemplate.Domain.Entities
 
     public int CountTicket { get; set; }
     public BookingOrderStatus Status { get; set; }
+    public string? Note { get; set; }
   }
 }

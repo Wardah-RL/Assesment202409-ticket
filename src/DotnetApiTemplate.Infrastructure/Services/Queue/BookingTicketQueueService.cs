@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Queues;
+﻿using Azure.Core;
+using Azure.Storage.Queues;
 using DotnetApiTemplate.Core.Abstractions.Queue;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
@@ -68,6 +69,12 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
 
                 if (getEvent != null)
                 {
+                  if (getEvent.CountTicket == 0)
+                    throw new Exception("Ticket is sold out");
+
+                  if (getEvent.CountTicket < getBookingMessage.CountTicket)
+                    throw new Exception($"Ticket already is {getEvent.CountTicket}");
+
                   dbContext.AttachEntity(getEvent);
                   getEvent.CountTicket = getEvent.CountTicket - getBookingMessage.CountTicket;
 
@@ -80,6 +87,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
                     phone = getBookingMessage.Phone,
                     Status = BookingOrderStatus.Pay,
                     IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+                    IdEvent = getBookingMessage.IdEvent,
                   };
                   await dbContext.InsertAsync(newBooking, cancellationToken);
                   await dbContext.SaveChangesAsync(cancellationToken);
@@ -105,40 +113,23 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
             }
             catch (Exception ex)
             {
-              using (var scope = _serviceProvider.CreateScope())
+              #region MessageBroker
+              BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
               {
-                var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
+                IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+                Status = BookingOrderStatus.Filed,
 
-                var newBooking = new TrBookingTicket
-                {
-                  Id = new UuidV7().Value,
-                  FullName = getBookingMessage.Name,
-                  Email = getBookingMessage.Email,
-                  CountTicket = getBookingMessage.CountTicket,
-                  phone = getBookingMessage.Phone,
-                  Status = BookingOrderStatus.Filed,
-                  IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-                };
-                await dbContext.InsertAsync(newBooking, cancellationToken);
-                await dbContext.SaveChangesAsync(cancellationToken);
+              };
 
-                #region MessageBroker
-                BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
-                {
-                  IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-                  Status = BookingOrderStatus.Filed,
-                };
+              SendQueueRequest _paramQueue = new SendQueueRequest
+              {
+                Message = JsonSerializer.Serialize(getBookingFeedback),
+                Scenario = "BookingFeedback",
+                QueueName = "bookingfeedback"
+              };
 
-                SendQueueRequest _paramQueue = new SendQueueRequest
-                {
-                  Message = JsonSerializer.Serialize(getBookingFeedback),
-                  Scenario = "BookingFeedback",
-                  QueueName = "bookingfeedback"
-                };
-
-                _emailQueue.Execute(_paramQueue);
-                #endregion
-              }
+              _emailQueue.Execute(_paramQueue);
+              #endregion
             }
 
             //remove queue

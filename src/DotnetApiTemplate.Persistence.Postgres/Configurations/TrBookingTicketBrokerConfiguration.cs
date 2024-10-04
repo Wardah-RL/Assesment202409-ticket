@@ -14,7 +14,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Configurations
   {
     protected override void EntityConfiguration(EntityTypeBuilder<TrBookingTicketBroker> builder)
     {
-
+      builder.Property(e => e.Note).HasMaxLength(500);
     }
   }
 }
