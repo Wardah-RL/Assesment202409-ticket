@@ -11,6 +11,7 @@ public sealed class User : BaseEntity, IEntity
     public DateTime? LastPasswordChangeAt { get; set; }
     public string? FullName { get; set; }
     public string? Email { get; set; }
+    public string? Phone { get; set; }
 
     public ICollection<UserRole> UserRoles { get; set; } = new HashSet<UserRole>();
     public ICollection<UserToken> UserTokens { get; set; } = new HashSet<UserToken>();
