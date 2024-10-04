@@ -20,5 +20,6 @@ namespace DotnetApiTemplate.Domain.Entities
     public string? phone { get; set; }
     public int CountTicket { get; set; }
     public BookingOrderStatus Status { get; set; }
+    public DateTime DateEvent { get; set; }
   }
 }

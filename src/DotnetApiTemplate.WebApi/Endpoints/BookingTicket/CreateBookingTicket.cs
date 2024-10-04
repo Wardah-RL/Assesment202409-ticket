@@ -33,13 +33,13 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
       _localizer = localizer;
     }
 
-    [HttpPost("booking")]
+    [HttpPost("bookingTicket")]
     //[Authorize]
     [SwaggerOperation(
-        Summary = "Create booking API",
+        Summary = "Create booking ticket API",
         Description = "",
-        OperationId = "Booking.CreateBooking",
-        Tags = new[] { "Booking" })
+        OperationId = "BookingTicket.CreateBookingTicket",
+        Tags = new[] { "BookingTicket" })
     ]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]

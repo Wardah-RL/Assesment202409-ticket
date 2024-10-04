@@ -55,7 +55,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
             Email = getBookingMessage.Email,
             CountTicket = getBookingMessage.CountTicket,
             phone = getBookingMessage.Phone,
-            Status = BookingOrderStatus.Pay,
+            Status = BookingOrderStatus.Payment,
             IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
             IdEvent = getBookingMessage.IdEvent,
           };
