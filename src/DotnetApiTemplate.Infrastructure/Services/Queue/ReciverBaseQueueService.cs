@@ -9,40 +9,67 @@ using System.Threading.Tasks;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using Microsoft.Extensions.Localization;
 using DotnetApiTemplate.Shared.Abstractions.Models;
+using DotnetApiTemplate.Core.Models.Queue;
+using DotnetApiTemplate.Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using System.Threading;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
   public class ReciverBaseQueueService : IGetQueue
   {
     private readonly QueueConfiguration _queueConfiguration;
-
-    public ReciverBaseQueueService(QueueConfiguration queueConfiguration)
+    private readonly IServiceProvider _serviceProvider;
+    private readonly CancellationToken cancellationToken;
+    public ReciverBaseQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider)
     {
       _queueConfiguration = queueConfiguration;
+      _serviceProvider = serviceProvider;
     }
-    public void Execute(string queueName)
+    public async void Execute(string queueName)
     {
-      QueueServiceClient serviceClient = new QueueServiceClient(_queueConfiguration.Connection);
+      string connectionString = _queueConfiguration.Connection;
 
-      //list all queues in the storage account
-      var getQueues = serviceClient.GetQueues().AsPages();
+      QueueClient queue = new QueueClient(connectionString, queueName);
 
-      //then you can write code to list all the queue names          
-      foreach (Azure.Page<QueueItem> queuePage in getQueues)
+      if (queue.Exists())
       {
-        foreach (QueueItem itemQueue in queuePage.Values)
+        try
         {
-          Console.WriteLine(itemQueue.Name);
+          var listReceiveMessages = queue.ReceiveMessages(maxMessages: 32).Value.ToList();
+
+          foreach (var message in listReceiveMessages)
+          {
+            var getMessage = JsonConvert.DeserializeObject<SendQueueRequest>(message.Body.ToString());
+            if (getMessage == null)
+              continue;
+
+            if (getMessage.Message is null || getMessage.Scenario is null)
+              continue;
+
+            bool isDeleteQueue = false;
+            using (var scope = _serviceProvider.CreateScope())
+            {
+              var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
+              isDeleteQueue = await QueueContent(dbContext,cancellationToken, getMessage.Scenario,  getMessage);
+            }
+
+            //remove queue
+            if(isDeleteQueue) 
+              queue.DeleteMessage(message.MessageId, message.PopReceipt);
+          }
+        }
+        catch (Exception ex)
+        {
+
         }
       }
     }
 
-    public virtual void cobax()
+    public async virtual Task<bool> QueueContent(IDbContext dbContext, CancellationToken cancellationToken, string scenario, SendQueueRequest message) 
     {
-
-
-
-
+      return true;
     }
   }
 }

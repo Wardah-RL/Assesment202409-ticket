@@ -23,98 +23,66 @@ using ThirdParty.Json.LitJson;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
-    public class EventQueueService : IGetQueue
+  public class EventQueueService : ReciverBaseQueueService
   {
-    private readonly QueueConfiguration _queueConfiguration;
-    private readonly CancellationToken cancellationToken;
-    private readonly IServiceProvider _serviceProvider;
 
-    public EventQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider)
+    public EventQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider) : base(queueConfiguration, serviceProvider)
     {
-      _queueConfiguration = queueConfiguration;
-      _serviceProvider = serviceProvider;
     }
 
-    public async void Execute(string queueName)
+    public async override Task<bool> QueueContent(IDbContext dbContext, CancellationToken cancellationToken, string scenario, SendQueueRequest message) 
     {
-      string connectionString = _queueConfiguration.Connection;
-
-      QueueClient queue = new QueueClient(connectionString, queueName);
-
-      if (queue.Exists())
+      try
       {
-        try
+        var getEventMessage = JsonConvert.DeserializeObject<EventMessageQueueRequest>(message.Message);
+
+        var getEvent = await dbContext.Set<MsEvent>()
+                         .Where(e => e.Id == getEventMessage.IdEvent)
+                         .FirstOrDefaultAsync(cancellationToken);
+
+        if (getEvent == null)
         {
-          var listReceiveMessages = queue.ReceiveMessages(maxMessages: 32).Value.ToList();
-
-          foreach (var message in listReceiveMessages)
+          //create event
+          var newEvent = new MsEvent
           {
-            var jsonString = message.Body.ToString();
-            var getMessage = JsonConvert.DeserializeObject<SendQueueRequest>(jsonString);
-            if (getMessage == null)
-              continue;
-
-            if (getMessage.Message == null)
-              continue;
-
-            var getEventMessage = JsonConvert.DeserializeObject<EventMessageQueueRequest>(getMessage.Message);
-
-            using (var scope = _serviceProvider.CreateScope())
-            {
-              var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
-
-              var getEvent = await dbContext.Set<MsEvent>()
-                             .Where(e => e.Id == getEventMessage.IdEvent)
-                             .FirstOrDefaultAsync(cancellationToken);
-
-              if (getEvent == null)
-              {
-                //create event
-                var newEvent = new MsEvent
-                {
-                  Id = getEventMessage.IdEvent,
-                  Name = getEventMessage.Name,
-                  StartDate = getEventMessage.StartDate,
-                  EndDate = getEventMessage.EndDate,
-                  CountTicket = getEventMessage.CountTicket,
-                  Price = getEventMessage.Price,
-                  Location = getEventMessage.Location,
-                };
-                await dbContext.InsertAsync(newEvent, cancellationToken);
-              }
-              else
-              {
-                if (getMessage.Scenario == "DeleteEvent")
-                {
-                  //Delete event
-                  dbContext.AttachEntity(getEvent);
-                  getEvent.IsDeleted = true;
-                }
-                else
-                {
-                  //Update event
-                  dbContext.AttachEntity(getEvent);
-                  getEvent.Name = getEventMessage.Name;
-                  getEvent.StartDate = getEventMessage.StartDate;
-                  getEvent.EndDate = getEventMessage.EndDate;
-                  getEvent.CountTicket = getEventMessage.CountTicket;
-                  getEvent.Location = getEventMessage.Location;
-                  getEvent.Price = getEventMessage.Price;
-                  await dbContext.SaveChangesAsync(cancellationToken);
-                }
-              }
-
-              await dbContext.SaveChangesAsync(cancellationToken);
-            }
-
-            //remove queue
-            queue.DeleteMessage(message.MessageId, message.PopReceipt);
+            Id = getEventMessage.IdEvent,
+            Name = getEventMessage.Name,
+            StartDate = getEventMessage.StartDate,
+            EndDate = getEventMessage.EndDate,
+            CountTicket = getEventMessage.CountTicket,
+            Price = getEventMessage.Price,
+            Location = getEventMessage.Location,
+          };
+          await dbContext.InsertAsync(newEvent, cancellationToken);
+        }
+        else
+        {
+          if (message.Scenario == "DeleteEvent")
+          {
+            //Delete event
+            dbContext.AttachEntity(getEvent);
+            getEvent.IsDeleted = true;
+          }
+          else
+          {
+            //Update event
+            dbContext.AttachEntity(getEvent);
+            getEvent.Name = getEventMessage.Name;
+            getEvent.StartDate = getEventMessage.StartDate;
+            getEvent.EndDate = getEventMessage.EndDate;
+            getEvent.CountTicket = getEventMessage.CountTicket;
+            getEvent.Location = getEventMessage.Location;
+            getEvent.Price = getEventMessage.Price;
+            await dbContext.SaveChangesAsync(cancellationToken);
           }
         }
-        catch (Exception ex)
-        {
 
-        }
+        await dbContext.SaveChangesAsync(cancellationToken);
+        return true;
+      }
+      catch (Exception ex)
+      {
+        return false;
       }
     }
   }

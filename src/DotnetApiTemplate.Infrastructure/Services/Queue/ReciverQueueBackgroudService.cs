@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
-  public class QueueBackgroudService : BackgroundService
+  public class ReciverQueueBackgroudService : BackgroundService
   {
-    private readonly ILogger<QueueBackgroudService> _logger;
+    private readonly ILogger<ReciverQueueBackgroudService> _logger;
     private readonly IGetQueue _getQueue;
     private readonly IServiceProvider _serviceProvider;
 
-    public QueueBackgroudService(ILogger<QueueBackgroudService> logger, IGetQueue getQueue, IServiceProvider serviceProvider)
+    public ReciverQueueBackgroudService(ILogger<ReciverQueueBackgroudService> logger, IGetQueue getQueue, IServiceProvider serviceProvider)
     {
       _logger = logger;
       _getQueue = getQueue;
@@ -36,8 +36,8 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
         using (var scope = _serviceProvider.CreateScope())
         {
           scope.ServiceProvider.GetRequiredService<ReciverBaseQueueService>().Execute("");
-          //scope.ServiceProvider.GetRequiredService<BookingTicketQueueService>().Execute("bookingticket");
-          //scope.ServiceProvider.GetRequiredService<BookingFeedbackQueueService>().Execute("bookingfeedback");
+          scope.ServiceProvider.GetRequiredService<BookingTicketQueueService>().Execute("bookingticket");
+          scope.ServiceProvider.GetRequiredService<BookingFeedbackQueueService>().Execute("bookingfeedback");
         }
         await Task.Delay(1000, stoppingToken);
       }

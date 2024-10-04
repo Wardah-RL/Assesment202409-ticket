@@ -19,127 +19,92 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
-  public class BookingTicketQueueService : IGetQueue
+  public class BookingTicketQueueService : ReciverBaseQueueService
   {
-    private readonly QueueConfiguration _queueConfiguration;
-    private readonly CancellationToken cancellationToken;
-    private readonly IServiceProvider _serviceProvider;
     private readonly ISendQueue _emailQueue;
 
-    public BookingTicketQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider, ISendQueue emailQueue)
+    public BookingTicketQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider, ISendQueue emailQueue) : base(queueConfiguration, serviceProvider)
     {
-      _queueConfiguration = queueConfiguration;
-      _serviceProvider = serviceProvider;
       _emailQueue = emailQueue;
     }
 
-    public async void Execute(string queueName)
+    public async override Task<bool> QueueContent(IDbContext dbContext, CancellationToken cancellationToken, string scenario, SendQueueRequest message)
     {
-      string connectionString = _queueConfiguration.Connection;
-
-      QueueClient queue = new QueueClient(connectionString, queueName);
-
-      if (queue.Exists())
+      try
       {
-        try
-        {
-          var listReceiveMessages = queue.ReceiveMessages(maxMessages: 32).Value.ToList();
+        var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketQueueRequest>(message.Message);
 
-          foreach (var message in listReceiveMessages)
+        var getEvent = await dbContext.Set<MsEvent>()
+                         .Where(e => e.Id == getBookingMessage.IdEvent)
+                         .FirstOrDefaultAsync(cancellationToken);
+        if (getEvent != null)
+        {
+          if (getEvent.CountTicket == 0)
+            throw new Exception("Ticket is sold out");
+
+          if (getEvent.CountTicket < getBookingMessage.CountTicket)
+            throw new Exception($"Ticket already is {getEvent.CountTicket}");
+
+          dbContext.AttachEntity(getEvent);
+          getEvent.CountTicket = getEvent.CountTicket - getBookingMessage.CountTicket;
+
+          var newBooking = new TrBookingTicket
           {
-            var jsonString = message.Body.ToString();
-            var getMessage = JsonConvert.DeserializeObject<SendQueueRequest>(jsonString);
-            if (getMessage == null)
-              continue;
+            Id = new UuidV7().Value,
+            FullName = getBookingMessage.Name,
+            Email = getBookingMessage.Email,
+            CountTicket = getBookingMessage.CountTicket,
+            phone = getBookingMessage.Phone,
+            Status = BookingOrderStatus.Pay,
+            IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+            IdEvent = getBookingMessage.IdEvent,
+          };
+          await dbContext.InsertAsync(newBooking, cancellationToken);
+          await dbContext.SaveChangesAsync(cancellationToken);
 
-            if (getMessage.Message == null)
-              continue;
+          #region MessageBroker
+          BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
+          {
+            IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+            Status = newBooking.Status,
+          };
 
-            var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketQueueRequest>(getMessage.Message);
+          SendQueueRequest _paramQueue = new SendQueueRequest
+          {
+            Message = JsonSerializer.Serialize(getBookingFeedback),
+            Scenario = "BookingFeedback",
+            QueueName = "bookingfeedback"
+          };
 
-            try
-            {
-              using (var scope = _serviceProvider.CreateScope())
-              {
-                var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
-
-                var getEvent = await dbContext.Set<MsEvent>()
-                               .Where(e => e.Id == getBookingMessage.IdEvent)
-                               .FirstOrDefaultAsync(cancellationToken);
-
-                if (getEvent != null)
-                {
-                  if (getEvent.CountTicket == 0)
-                    throw new Exception("Ticket is sold out");
-
-                  if (getEvent.CountTicket < getBookingMessage.CountTicket)
-                    throw new Exception($"Ticket already is {getEvent.CountTicket}");
-
-                  dbContext.AttachEntity(getEvent);
-                  getEvent.CountTicket = getEvent.CountTicket - getBookingMessage.CountTicket;
-
-                  var newBooking = new TrBookingTicket
-                  {
-                    Id = new UuidV7().Value,
-                    FullName = getBookingMessage.Name,
-                    Email = getBookingMessage.Email,
-                    CountTicket = getBookingMessage.CountTicket,
-                    phone = getBookingMessage.Phone,
-                    Status = BookingOrderStatus.Pay,
-                    IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-                    IdEvent = getBookingMessage.IdEvent,
-                  };
-                  await dbContext.InsertAsync(newBooking, cancellationToken);
-                  await dbContext.SaveChangesAsync(cancellationToken);
-
-                  #region MessageBroker
-                  BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
-                  {
-                    IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-                    Status = newBooking.Status,
-                  };
-
-                  SendQueueRequest _paramQueue = new SendQueueRequest
-                  {
-                    Message = JsonSerializer.Serialize(getBookingFeedback),
-                    Scenario = "BookingFeedback",
-                    QueueName = "bookingfeedback"
-                  };
-
-                  _emailQueue.Execute(_paramQueue);
-                  #endregion
-                }
-              }
-            }
-            catch (Exception ex)
-            {
-              #region MessageBroker
-              BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
-              {
-                IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-                Status = BookingOrderStatus.Filed,
-
-              };
-
-              SendQueueRequest _paramQueue = new SendQueueRequest
-              {
-                Message = JsonSerializer.Serialize(getBookingFeedback),
-                Scenario = "BookingFeedback",
-                QueueName = "bookingfeedback"
-              };
-
-              _emailQueue.Execute(_paramQueue);
-              #endregion
-            }
-
-            //remove queue
-            queue.DeleteMessage(message.MessageId, message.PopReceipt);
-          }
+          _emailQueue.Execute(_paramQueue);
+          #endregion
         }
-        catch (Exception ex)
+
+        return true;
+      }
+      catch (Exception ex)
+      {
+        #region MessageBroker
+        var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketQueueRequest>(message.Message);
+
+        BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
         {
+          IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+          Status = BookingOrderStatus.Filed,
 
-        }
+        };
+
+        SendQueueRequest _paramQueue = new SendQueueRequest
+        {
+          Message = JsonSerializer.Serialize(getBookingFeedback),
+          Scenario = "BookingFeedback",
+          QueueName = "bookingfeedback"
+        };
+
+        _emailQueue.Execute(_paramQueue);
+        #endregion
+
+        return false;
       }
     }
   }

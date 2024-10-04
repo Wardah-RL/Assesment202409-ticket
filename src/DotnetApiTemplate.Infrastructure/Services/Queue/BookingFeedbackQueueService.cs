@@ -17,69 +17,34 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
-  public class BookingFeedbackQueueService : IGetQueue
+  public class BookingFeedbackQueueService : ReciverBaseQueueService
   {
-    private readonly QueueConfiguration _queueConfiguration;
-    private readonly CancellationToken cancellationToken;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ISendQueue _emailQueue;
-
-    public BookingFeedbackQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider, ISendQueue emailQueue)
+    public BookingFeedbackQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider) : base(queueConfiguration, serviceProvider)
     {
-      _queueConfiguration = queueConfiguration;
-      _serviceProvider = serviceProvider;
-      _emailQueue = emailQueue;
     }
 
-    public async void Execute(string queueName)
+    public async override Task<bool> QueueContent(IDbContext dbContext, CancellationToken cancellationToken, string scenario, SendQueueRequest message)
     {
-      string connectionString = _queueConfiguration.Connection;
-
-      QueueClient queue = new QueueClient(connectionString, queueName);
-
-      if (queue.Exists())
+      try
       {
-        try
+        var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketFeedbackQueueRequest>(message.Message);
+
+        var getBookingTicketBroker = await dbContext.Set<TrBookingTicketBroker>()
+                         .Where(e => e.Id == getBookingMessage.IdBookingTicketBroker)
+                         .FirstOrDefaultAsync(cancellationToken);
+
+        if (getBookingTicketBroker != null)
         {
-          var listReceiveMessages = queue.ReceiveMessages(maxMessages: 32).Value.ToList();
-
-          foreach (var message in listReceiveMessages)
-          {
-            var jsonString = message.Body.ToString();
-            var getMessage = JsonConvert.DeserializeObject<SendQueueRequest>(jsonString);
-            if (getMessage == null)
-              continue;
-
-            if (getMessage.Message == null)
-              continue;
-
-            var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketFeedbackQueueRequest>(getMessage.Message);
-
-            using (var scope = _serviceProvider.CreateScope())
-            {
-              var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
-
-              var getBookingTicketBroker = await dbContext.Set<TrBookingTicketBroker>()
-                             .Where(e => e.Id == getBookingMessage.IdBookingTicketBroker)
-                             .FirstOrDefaultAsync(cancellationToken);
-
-              if (getBookingTicketBroker != null)
-              {
-                dbContext.AttachEntity(getBookingTicketBroker);
-                getBookingTicketBroker.Status = getBookingMessage.Status;
-                await dbContext.SaveChangesAsync(cancellationToken);
-              }
-            }
-
-
-            //remove queue
-            queue.DeleteMessage(message.MessageId, message.PopReceipt);
-          }
+          dbContext.AttachEntity(getBookingTicketBroker);
+          getBookingTicketBroker.Status = getBookingMessage.Status;
+          await dbContext.SaveChangesAsync(cancellationToken);
         }
-        catch (Exception ex)
-        {
-
-        }
+        return true;
+      }
+      catch (Exception ex)
+      {
+        
+        return false;
       }
     }
   }
