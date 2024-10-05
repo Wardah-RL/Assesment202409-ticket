@@ -3,6 +3,7 @@ using DotnetApiTemplate.Core.Models;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Domain.Enums;
+using DotnetApiTemplate.Shared.Abstractions.Clock;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Helpers;
 using DotnetApiTemplate.WebApi.Endpoints.BookingTicket.Request;
@@ -24,13 +25,16 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
     private readonly IDbContext _dbContext;
     private readonly IStringLocalizer<CreateBookingTicket> _localizer;
     private readonly ISendQueue _emailQueue;
+    private readonly IClock _clock;
+
     public CreateBookingTicket(IDbContext dbContext,
         ISendQueue emailQueue,
-        IStringLocalizer<CreateBookingTicket> localizer)
+        IStringLocalizer<CreateBookingTicket> localizer, IClock clock)
     {
       _dbContext = dbContext;
       _emailQueue = emailQueue;
       _localizer = localizer;
+      _clock = clock;
     }
 
     [HttpPost("bookingTicket")]
@@ -58,10 +62,21 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
       if (getEvent != null)
       {
         if (getEvent.CountTicket == 0)
-          throw new Exception("Ticket is sold out");
+          return BadRequest(Error.Create(_localizer["ticket-booking-sold"], validationResult.Construct()));
 
         if (getEvent.CountTicket < request.CountTicket)
-          throw new Exception($"Ticket already is {getEvent.CountTicket}");
+          return BadRequest(Error.Create(_localizer["ticket-available"] + getEvent.CountTicket + _localizer["ticket"], validationResult.Construct()));
+
+        if(getEvent.StartDate.Date<=request.DateEvent.Date && getEvent.EndDate.Date >= request.DateEvent.Date)
+        {
+
+        }
+        else
+          return BadRequest(Error.Create(_localizer["event-date-wrong"], validationResult.Construct()));
+
+        if (_clock.CurrentDate().Date >= getEvent.EndDate.Date)
+          return BadRequest(Error.Create(_localizer["event-out-of-date"], validationResult.Construct()));
+
 
         _dbContext.AttachEntity(getEvent);
         getEvent.CountTicket = getEvent.CountTicket - request.CountTicket;
@@ -73,7 +88,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
         IdEventBroker = request.IdEvent,
         IdUser = request.IdUser,
         CountTicket = request.CountTicket,
-        Status = BookingOrderStatus.Process,
+        Status = BookingOrderStatus.Processed,
         DateEvent = request.DateEvent,
       };
 

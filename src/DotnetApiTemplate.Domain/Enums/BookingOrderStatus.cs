@@ -8,9 +8,10 @@ namespace DotnetApiTemplate.Domain.Enums
 {
   public enum BookingOrderStatus
   {
-    Process,
+    Processed,
+    Ordered,
     Payment,
     Done,
-    Filed
+    failed,
   }
 }

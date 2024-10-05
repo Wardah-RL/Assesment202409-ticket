@@ -7,5 +7,7 @@
     public int CountTicket { get; set; }
     public string Status { get; set; } = string.Empty;
     public DateTime DateEvent { get; set; }
+    public int Price { get; set; }
+    public int Total { get; set; }
   }
 }

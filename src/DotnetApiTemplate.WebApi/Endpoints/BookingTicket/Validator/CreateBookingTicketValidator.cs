@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket.Validator
 {
-    public class CreateBookingTicketValidator : AbstractValidator<CreateBookingTicketRequest>
+  public class CreateBookingTicketValidator : AbstractValidator<CreateBookingTicketRequest>
   {
     public CreateBookingTicketValidator()
     {
