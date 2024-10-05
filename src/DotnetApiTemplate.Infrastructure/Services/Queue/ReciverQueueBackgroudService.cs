@@ -35,7 +35,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
       {
         using (var scope = _serviceProvider.CreateScope())
         {
-          scope.ServiceProvider.GetRequiredService<ReciverBaseQueueService>().Execute("");
+          scope.ServiceProvider.GetRequiredService<EventQueueService>().Execute("event");
           scope.ServiceProvider.GetRequiredService<BookingTicketQueueService>().Execute("bookingticket");
           scope.ServiceProvider.GetRequiredService<BookingFeedbackQueueService>().Execute("bookingfeedback");
         }

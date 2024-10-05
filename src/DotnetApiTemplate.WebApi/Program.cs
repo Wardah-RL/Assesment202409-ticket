@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen2();
 builder.Services.AddAuth();
 builder.Services.AddGlobalExceptionHandler();
 builder.Services.AddCustomApiBehavior();
-builder.Services.AddHostedService<GetQueueService>();
+builder.Services.AddHostedService<ReciverQueueBackgroudService>();
 builder.Services.AddTransient<EventQueueService>();
 builder.Services.AddTransient<BookingTicketQueueService>();
 builder.Services.AddTransient<BookingFeedbackQueueService>();

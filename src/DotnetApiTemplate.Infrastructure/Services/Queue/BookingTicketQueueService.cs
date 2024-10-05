@@ -55,7 +55,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
             Email = getBookingMessage.Email,
             CountTicket = getBookingMessage.CountTicket,
             phone = getBookingMessage.Phone,
-            Status = BookingOrderStatus.Payment,
+            Status = BookingOrderStatus.Ordered,
             IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
             IdEvent = getBookingMessage.IdEvent,
             DateEvent = getBookingMessage.DateEvent,
@@ -92,7 +92,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
         BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
         {
           IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-          Status = BookingOrderStatus.Filed,
+          Status = BookingOrderStatus.failed,
         };
 
         SendQueueRequest _paramQueue = new SendQueueRequest
