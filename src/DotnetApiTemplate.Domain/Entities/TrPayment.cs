@@ -14,8 +14,9 @@ namespace DotnetApiTemplate.Domain.Entities
     public Guid IdBookingTicket { get; set; }
     public TrBookingTicketBroker? BookingTicket { get; set; }
     public int TotalPayment { get; set; }
-    public string Nama { get; set; } = string.Empty;
+    public string NamaPengirim { get; set; } = string.Empty;
     public string Bank { get; set; } = string.Empty;
+    public string NoRekening { get; set; } = string.Empty;
   }
 }
 
