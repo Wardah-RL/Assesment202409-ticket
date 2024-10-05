@@ -4,6 +4,6 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event.Request
 {
   public class DeleteEventRequest
   {
-    [FromRoute(Name = "IdEvent")] public Guid IdEvent { get; set; }
+    [FromRoute(Name = "idEvent")] public Guid IdEvent { get; set; }
   }
 }

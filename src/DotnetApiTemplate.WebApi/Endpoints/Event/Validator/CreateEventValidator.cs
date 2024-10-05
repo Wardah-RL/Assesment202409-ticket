@@ -9,6 +9,8 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event.Validator
   {
     public CreateEventValidator()
     {
+      RuleFor(e => e.CountTicket).NotNull().NotEmpty();
+      RuleFor(e => e.Price).NotNull().NotEmpty();
       RuleFor(e => e.Name).NotNull().NotEmpty();
       RuleFor(e => e.CountTicket).NotNull();
     }

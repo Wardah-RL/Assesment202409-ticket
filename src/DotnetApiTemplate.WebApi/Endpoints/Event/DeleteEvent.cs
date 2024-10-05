@@ -41,27 +41,35 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
         DeleteEventRequest request,
         CancellationToken cancellationToken = new())
     {
-      var geteventBroker = await _dbContext.Set<MsEventBroker>()
+      var getEventBroker = await _dbContext.Set<MsEventBroker>()
+                      .Include(e=>e.BookingBroker)
                       .Where(e => e.Id == request.IdEvent)
                       .FirstOrDefaultAsync(cancellationToken);
 
-      if (geteventBroker == null)
+      if (getEventBroker == null)
         return BadRequest(Error.Create(string.Format(_localizer["event-not-found"], request.IdEvent)));
 
-      _dbContext.AttachEntity(geteventBroker);
-      geteventBroker.IsDeleted = true;
+      var getBookingTicketBroker = await _dbContext.Set<TrBookingTicketBroker>()
+                      .Where(e => e.IdEventBroker == request.IdEvent)
+                      .ToListAsync(cancellationToken);
+
+      if (getBookingTicketBroker.Any())
+        return BadRequest(Error.Create(string.Format(_localizer["event-use"], getEventBroker.Name)));
+
+      _dbContext.AttachEntity(getEventBroker);
+      getEventBroker.IsDeleted = true;
       await _dbContext.SaveChangesAsync(cancellationToken);
 
       #region MessageBroker
       EventMessageQueueRequest getEventBrokerMessage = new EventMessageQueueRequest
       {
-        IdEvent = geteventBroker.Id,
-        CountTicket = geteventBroker.CountTicket,
-        EndDate = geteventBroker.EndDate,
-        StartDate = geteventBroker.StartDate,
-        Location = geteventBroker.Location,
-        Name = geteventBroker.Name,
-        Price = geteventBroker.Price,
+        IdEvent = getEventBroker.Id,
+        CountTicket = getEventBroker.CountTicket,
+        EndDate = getEventBroker.EndDate,
+        StartDate = getEventBroker.StartDate,
+        Location = getEventBroker.Location,
+        Name = getEventBroker.Name,
+        Price = getEventBroker.Price,
       };
       
       SendQueueRequest _paramQueue = new SendQueueRequest
