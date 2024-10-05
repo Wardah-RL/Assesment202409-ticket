@@ -12,7 +12,7 @@ namespace DotnetApiTemplate.Domain.Entities
   {
     [ForeignKey(nameof(BookingTicket))]
     public Guid IdBookingTicket { get; set; }
-    public TrBookingTicketBroker? BookingTicket { get; set; }
+    public TrBookingTicket? BookingTicket { get; set; }
     public int TotalPayment { get; set; }
     public string NamaPengirim { get; set; } = string.Empty;
     public string Bank { get; set; } = string.Empty;
