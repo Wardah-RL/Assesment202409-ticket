@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotnetApiTemplate.Core.Abstractions.Queue
+namespace DotnetApiTemplate.Core.Abstractions
 {
-  public interface IGetQueue
-  {
-    void Execute(string queueName);
-  }
+    public interface IReciverQueue
+    {
+        Task Execute(string queueName);
+    }
 }
