@@ -7,5 +7,14 @@
   "username-exists": "Username already exists",
   "user-inactive": "User already inactive",
   "role-name-exists": "Role name {0} already exists",
-  "to-large-text-size": "Text size must be lower than 1MB"
+  "to-large-text-size": "Text size must be lower than 1MB",
+  "event-not-found": "Event is not found",
+  "event-use": "This Event data is already in use. Please update before deleting data.",
+  "ticket-sold": "Ticket is sold out",
+  "ticket-available": "Ticket available is",
+  "event-date-wrong": "Date ticket is wrong",
+  "event-out-of-date": "event is out of date",
+  "booking-ticket-not-found": "Booking ticket is not found",
+  "ticket": "ticket",
+  "total-payment-is-not-same" : "Total payment is wrong"
 }
