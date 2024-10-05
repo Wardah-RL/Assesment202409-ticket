@@ -1,6 +1,5 @@
 ﻿using Azure.Storage.Queues.Models;
 using Azure.Storage.Queues;
-using DotnetApiTemplate.Core.Abstractions.Queue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +13,11 @@ using DotnetApiTemplate.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Threading;
+using DotnetApiTemplate.Core.Abstractions;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
-  public class ReciverBaseQueueService : IGetQueue
+    public class ReciverBaseQueueService : IReciverQueue
   {
     private readonly QueueConfiguration _queueConfiguration;
     private readonly IServiceProvider _serviceProvider;
@@ -27,7 +27,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
       _queueConfiguration = queueConfiguration;
       _serviceProvider = serviceProvider;
     }
-    public async void Execute(string queueName)
+    public async Task Execute(string queueName)
     {
       string connectionString = _queueConfiguration.Connection;
 
@@ -56,8 +56,8 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
             }
 
             //remove queue
-            if(isDeleteQueue) 
-              queue.DeleteMessage(message.MessageId, message.PopReceipt);
+            //if(isDeleteQueue) 
+            //  queue.DeleteMessage(message.MessageId, message.PopReceipt);
           }
         }
         catch (Exception ex)

@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 using System.Text.Json.Nodes;
 using DotnetApiTemplate.Shared.Abstractions.Models;
 using Azure.Identity;
-using DotnetApiTemplate.Core.Abstractions.Queue;
 using DotnetApiTemplate.Core.Models.Queue;
+using DotnetApiTemplate.Core.Abstractions;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
@@ -20,7 +20,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
             _queueConfiguration = queueConfiguration;
         }
 
-        public async void Execute(SendQueueRequest paramQueue)
+        public async Task Execute(SendQueueRequest paramQueue)
         {
             string connectionString = _queueConfiguration.Connection;
             QueueClient queue = new QueueClient(connectionString, paramQueue.QueueName);

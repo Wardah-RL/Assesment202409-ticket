@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Queues;
-using DotnetApiTemplate.Core.Abstractions.Queue;
+using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
-  public class ReciverQueueBackgroudService : BackgroundService
+    public class ReciverQueueBackgroudService : BackgroundService
   {
     private readonly ILogger<ReciverQueueBackgroudService> _logger;
-    private readonly IGetQueue _getQueue;
+    private readonly IReciverQueue _getQueue;
     private readonly IServiceProvider _serviceProvider;
 
-    public ReciverQueueBackgroudService(ILogger<ReciverQueueBackgroudService> logger, IGetQueue getQueue, IServiceProvider serviceProvider)
+    public ReciverQueueBackgroudService(ILogger<ReciverQueueBackgroudService> logger, IReciverQueue getQueue, IServiceProvider serviceProvider)
     {
       _logger = logger;
       _getQueue = getQueue;
@@ -38,6 +38,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
           scope.ServiceProvider.GetRequiredService<EventQueueService>().Execute("event");
           scope.ServiceProvider.GetRequiredService<BookingTicketQueueService>().Execute("bookingticket");
           scope.ServiceProvider.GetRequiredService<BookingFeedbackQueueService>().Execute("bookingfeedback");
+          scope.ServiceProvider.GetRequiredService<PaymetQueueService>().Execute("payment");
         }
         await Task.Delay(1000, stoppingToken);
       }

@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using Azure.Storage.Queues;
-using DotnetApiTemplate.Core.Abstractions.Queue;
+using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Domain.Enums;
@@ -19,7 +19,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
-  public class BookingTicketQueueService : ReciverBaseQueueService
+    public class BookingTicketQueueService : ReciverBaseQueueService
   {
     private readonly ISendQueue _emailQueue;
 
