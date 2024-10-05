@@ -1,9 +1,11 @@
 ﻿using DotnetApiTemplate.Domain.Entities;
+using DotnetApiTemplate.Shared.Abstractions.Contexts;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Queries;
 using DotnetApiTemplate.Shared.Infrastructure;
 using DotnetApiTemplate.WebApi.Contracts.Responses;
 using DotnetApiTemplate.WebApi.Endpoints.Event.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -16,16 +18,19 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
   {
     private readonly IDbContext _dbContext;
     private readonly IStringLocalizer<GetBookingTicket> _localizer;
+    private readonly IContext? _context;
 
     public GetBookingTicket(IDbContext dbContext,
-        IStringLocalizer<GetBookingTicket> localizer)
+        IStringLocalizer<GetBookingTicket> localizer,
+        IContext? context)
     {
       _dbContext = dbContext;
       _localizer = localizer;
+      _context = context;
     }
 
     [HttpGet("bookingTicket")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
        Summary = "Get booking ticket API",
        Description = "",
@@ -39,6 +44,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
     {
       var queryable = _dbContext.Set<TrBookingTicketBroker>()
                       .Include(e=>e.EventBroker)
+                      .Where(e=>e.IdUser== _context!.Identity.Id)
                       .AsQueryable();
 
       var totalRows = await queryable.CountAsync(cancellationToken);
