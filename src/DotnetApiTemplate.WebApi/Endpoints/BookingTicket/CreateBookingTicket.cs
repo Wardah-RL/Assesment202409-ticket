@@ -1,4 +1,4 @@
-﻿using DotnetApiTemplate.Core.Abstractions.Queue;
+﻿using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;

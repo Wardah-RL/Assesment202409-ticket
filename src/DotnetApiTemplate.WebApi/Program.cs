@@ -1,4 +1,4 @@
-using DotnetApiTemplate.Core.Abstractions.Queue;
+using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Infrastructure;
 using DotnetApiTemplate.Infrastructure.Services.Queue;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
@@ -31,9 +31,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IAuthManager, AuthManager>();
 builder.Services.AddSingleton<ISendQueue, SendQueueService>();
-builder.Services.AddSingleton<IGetQueue, EventQueueService>();
-builder.Services.AddSingleton<IGetQueue, BookingTicketQueueService>();
-builder.Services.AddSingleton<IGetQueue, BookingFeedbackQueueService>();
+builder.Services.AddSingleton<IReciverQueue, EventQueueService>();
+builder.Services.AddSingleton<IReciverQueue, BookingTicketQueueService>();
+builder.Services.AddSingleton<IReciverQueue, BookingFeedbackQueueService>();
+builder.Services.AddSingleton<IReciverQueue, PaymetQueueService>();
 builder.Services.AddSwaggerGen2();
 builder.Services.AddAuth();
 builder.Services.AddGlobalExceptionHandler();
@@ -42,6 +43,7 @@ builder.Services.AddHostedService<ReciverQueueBackgroudService>();
 builder.Services.AddTransient<EventQueueService>();
 builder.Services.AddTransient<BookingTicketQueueService>();
 builder.Services.AddTransient<BookingFeedbackQueueService>();
+builder.Services.AddTransient<PaymetQueueService>();
 
 //builder.Services.AddRedisCache(builder.Configuration);
 builder.Services.AddInternalMemoryCache();

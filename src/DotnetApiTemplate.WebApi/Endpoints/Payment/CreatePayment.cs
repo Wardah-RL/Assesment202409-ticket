@@ -1,4 +1,4 @@
-﻿using DotnetApiTemplate.Core.Abstractions.Queue;
+﻿using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
@@ -16,7 +16,7 @@ using System.Text.Json;
 
 namespace DotnetApiTemplate.WebApi.Endpoints.Payment
 {
-  public class CreatePayment : BaseEndpointWithoutResponse<CreatePaymentRequest>
+    public class CreatePayment : BaseEndpointWithoutResponse<CreatePaymentRequest>
   {
     private readonly IDbContext _dbContext;
     private readonly IStringLocalizer<CreatePayment> _localizer;
