@@ -4,6 +4,7 @@ using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Models;
+using DotnetApiTemplate.WebApi.Endpoints.Payment.Notification;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
           scope.ServiceProvider.GetRequiredService<BookingTicketQueueService>().Execute("bookingticket");
           scope.ServiceProvider.GetRequiredService<BookingFeedbackQueueService>().Execute("bookingfeedback");
           scope.ServiceProvider.GetRequiredService<PaymetQueueService>().Execute("payment");
+          scope.ServiceProvider.GetRequiredService<PaymentSuccessService>().Execute("notification");
         }
         await Task.Delay(1000, stoppingToken);
       }

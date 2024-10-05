@@ -1,30 +1,33 @@
-﻿using DotnetApiTemplate.Core.Abstractions;
+﻿using Azure.Core;
+using Azure.Storage.Queues;
+using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Domain.Enums;
+using DotnetApiTemplate.Shared.Abstractions.Contexts;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Helpers;
 using DotnetApiTemplate.Shared.Abstractions.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Queue
 {
     public class PaymetQueueService : ReciverBaseQueueService
   {
     private readonly ISendQueue _emailQueue;
+    private readonly IServiceProvider _serviceProvider;
 
     public PaymetQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider, ISendQueue emailQueue) : base(queueConfiguration, serviceProvider)
     {
       _emailQueue = emailQueue;
+      _serviceProvider = serviceProvider;
     }
 
     public async override Task<bool> QueueContent(IDbContext dbContext, CancellationToken cancellationToken, string scenario, SendQueueRequest message)
@@ -39,19 +42,19 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
 
         if (getBookingTicket != null)
         {
-          //dbContext.AttachEntity(getBookingTicket);
-          //getBookingTicket.Status = BookingOrderStatus.Done;
+          dbContext.AttachEntity(getBookingTicket);
+          getBookingTicket.Status = BookingOrderStatus.Done;
 
-          //var newBooking = new TrPayment
-          //{
-          //  Id = new UuidV7().Value,
-          //  TotalPayment = getPaymentMessage.TotalPayment,
-          //  NamaPengirim = getPaymentMessage.NamaPengirim,
-          //  Bank = getPaymentMessage.Bank,
-          //  IdBookingTicket = getBookingTicket.Id,
-          //};
-          //await dbContext.InsertAsync(newBooking, cancellationToken);
-          //await dbContext.SaveChangesAsync(cancellationToken);
+          var newBooking = new TrPayment
+          {
+            Id = new UuidV7().Value,
+            TotalPayment = getPaymentMessage.TotalPayment,
+            NamaPengirim = getPaymentMessage.NamaPengirim,
+            Bank = getPaymentMessage.Bank,
+            IdBookingTicket = getBookingTicket.Id,
+          };
+          await dbContext.InsertAsync(newBooking, cancellationToken);
+          await dbContext.SaveChangesAsync(cancellationToken);
 
           #region
           //var apiKey = "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";
@@ -67,23 +70,22 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
           #endregion
 
 
-          //#region MessageBroker
-          //BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
-          //{
-          //  IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-          //  Status = newBooking.Status,
-          //  OrderCode = newBooking.Id,
-          //};
+          #region MessageBroker
+          NotificationRequest getNotification = new NotificationRequest
+          {
+            Scenario = "T001",
+            Id = getPaymentMessage.IdBookingTicket
+          };
 
-          //SendQueueRequest _paramQueue = new SendQueueRequest
-          //{
-          //  Message = JsonSerializer.Serialize(getBookingFeedback),
-          //  Scenario = "BookingFeedback",
-          //  QueueName = "bookingfeedback"
-          //};
+          SendQueueRequest _paramQueue = new SendQueueRequest
+          {
+            Message = JsonSerializer.Serialize(getNotification),
+            Scenario = "Notification",
+            QueueName = "notification"
+          };
 
-          //_emailQueue.Execute(_paramQueue);
-          //#endregion
+          _emailQueue.Execute(_paramQueue);
+          #endregion
         }
 
         return true;

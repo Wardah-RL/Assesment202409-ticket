@@ -8,6 +8,6 @@ namespace DotnetApiTemplate.Core.Abstractions
 {
   public interface INotification
   {
-    Task Execute(string queueName);
+    Task Execute();
   }
 }
