@@ -2,9 +2,9 @@
 using Azure.Storage.Queues;
 using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
-using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Domain.Enums;
 using DotnetApiTemplate.Infrastructure.Services;
+using DotnetApiTemplate.Persistence.Postgres.Ticket.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Contexts;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Helpers;
@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace DotnetApiTemplate.WebApi.Queue
+namespace DotnetApiTemplate.WebApi.Ticket.Queue
 {
     public class BookingTicketQueueService : ReciverBaseQueueService
     {

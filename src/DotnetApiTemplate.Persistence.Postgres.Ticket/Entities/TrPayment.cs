@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotnetApiTemplate.Domain.Entities
+namespace DotnetApiTemplate.Persistence.Postgres.Ticket.Entities
 {
   public class TrPayment : BaseEntity
   {

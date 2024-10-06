@@ -1,4 +1,5 @@
-﻿using DotnetApiTemplate.Domain.Entities;
+﻿
+using DotnetApiTemplate.Domain.Entities;
 
 namespace DotnetApiTemplate.Core.Abstractions;
 

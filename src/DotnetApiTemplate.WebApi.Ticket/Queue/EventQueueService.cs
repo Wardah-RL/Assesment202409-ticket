@@ -5,6 +5,7 @@ using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Infrastructure.Services;
+using DotnetApiTemplate.Persistence.Postgres.Ticket.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Helpers;
 using DotnetApiTemplate.Shared.Abstractions.Models;
@@ -21,7 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ThirdParty.Json.LitJson;
 
-namespace DotnetApiTemplate.WebApi.Queue
+namespace DotnetApiTemplate.WebApi.Ticket.Queue
 {
     public class EventQueueService : ReciverBaseQueueService
     {

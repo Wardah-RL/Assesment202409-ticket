@@ -9,7 +9,7 @@ using DotnetApiTemplate.Shared.Infrastructure.Logging;
 using DotnetApiTemplate.Shared.Infrastructure.Serialization.SystemTextJson;
 using DotnetApiTemplate.WebApi.Common;
 using DotnetApiTemplate.WebApi.HealthChecks;
-using DotnetApiTemplate.WebApi.Queue;
+using DotnetApiTemplate.WebApi.Ticket.Queue;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;

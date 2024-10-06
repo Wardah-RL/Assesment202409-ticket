@@ -4,7 +4,6 @@ using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Models;
-using DotnetApiTemplate.WebApi.Queue;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotnetApiTemplate.WebApi.Queue
+namespace DotnetApiTemplate.WebApi.Ticket.Queue
 {
     public class ReciverQueueBackgroudService : BackgroundService
     {

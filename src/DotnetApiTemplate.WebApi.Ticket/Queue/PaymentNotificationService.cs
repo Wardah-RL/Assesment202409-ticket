@@ -10,7 +10,7 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading;
 
-namespace DotnetApiTemplate.WebApi.Queue
+namespace DotnetApiTemplate.WebApi.Ticket.Queue
 {
     public class PaymentNotificationService : NotificationService
   {

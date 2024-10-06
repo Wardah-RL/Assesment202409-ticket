@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -6,9 +6,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\DotnetApiTemplate.Domain\DotnetApiTemplate.Domain.csproj" />
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AWSSDK.S3" Version="3.7.401" />
@@ -41,5 +38,9 @@
       <None Remove="UserManagement\**" />
       <None Remove="Options\**" />
     </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotnetApiTemplate.Domain\DotnetApiTemplate.Domain.csproj" />
+  </ItemGroup>
 
 </Project>

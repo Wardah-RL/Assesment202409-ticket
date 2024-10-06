@@ -34,6 +34,7 @@
     <ProjectReference Include="..\DotnetApiTemplate.Infrastructure\DotnetApiTemplate.Infrastructure.csproj" />
     <ProjectReference Include="..\DotnetApiTemplate.Persistence.Postgres\DotnetApiTemplate.Persistence.Postgres.csproj" />
     <ProjectReference Include="..\DotnetApiTemplate.Persistence.SqlServer\DotnetApiTemplate.Persistence.SqlServer.csproj" />
+    <ProjectReference Include="..\DotnetApiTemplate.WebApi.Ticket\DotnetApiTemplate.WebApi.Ticket.csproj" />
   </ItemGroup>
 
   <ItemGroup>
