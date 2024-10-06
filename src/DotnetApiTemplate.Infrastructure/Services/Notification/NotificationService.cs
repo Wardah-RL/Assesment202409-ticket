@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Azure.Storage.Queues;
 using Newtonsoft.Json;
 using DotnetApiTemplate.Shared.Abstractions.Models;
+using System.Net;
 
 namespace DotnetApiTemplate.Infrastructure.Services.Notification
 {
@@ -65,12 +66,15 @@ namespace DotnetApiTemplate.Infrastructure.Services.Notification
               var template = await Template(dbContext, getNotification.Scenario);
               await Prepare(dbContext, cancellationToken, getNotification);
               var sendEmailRequest = await SendEmailNotification(dbContext, cancellationToken, template);
-              await SendEmail(sendEmailRequest);
+              var IsStatusSend = await SendEmail(sendEmailRequest);
+
+              if(IsStatusSend) 
+                isDeleteQueue = true;
             }
 
             //remove queue
-            //if (isDeleteQueue)
-            //  queue.DeleteMessage(message.MessageId, message.PopReceipt);
+            if (isDeleteQueue)
+              queue.DeleteMessage(message.MessageId, message.PopReceipt);
           }
         }
         catch (Exception ex)
@@ -96,7 +100,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Notification
     //  return sendEmailRequest;
     //}
 
-    public async Task SendEmail(SendEmailRequest request)
+    public async Task<bool> SendEmail(SendEmailRequest request)
     {
       string plainTextContent = default;
       string htmlContent = default;
@@ -110,11 +114,17 @@ namespace DotnetApiTemplate.Infrastructure.Services.Notification
       else
         plainTextContent = request.TextContent;
 
+      var isStatusSend = false;
       foreach (var to in request.Tos)
       {
         var msg = MailHelper.CreateSingleEmail(from, to, request.Subject, plainTextContent, htmlContent);
         var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
+
+        if (response.IsSuccessStatusCode)
+          isStatusSend = true;
       }
+
+      return isStatusSend;
     }
 
     public async Task<SendEmailRequest> Template(IDbContext dbContext, string idScenario)

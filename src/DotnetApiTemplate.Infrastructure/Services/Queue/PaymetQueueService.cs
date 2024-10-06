@@ -56,21 +56,38 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
           await dbContext.InsertAsync(newBooking, cancellationToken);
           await dbContext.SaveChangesAsync(cancellationToken);
 
-          #region MessageBroker
+          #region Message Broker
+          BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
+          {
+            IdBookingTicketBroker = getPaymentMessage.IdBookingTicket,
+            Status = BookingOrderStatus.Done,
+            OrderCode = getPaymentMessage.OrderCode,
+          };
+
+          SendQueueRequest _paramQueue = new SendQueueRequest
+          {
+            Message = JsonSerializer.Serialize(getBookingFeedback),
+            Scenario = "BookingFeedback",
+            QueueName = "bookingfeedback"
+          };
+          _emailQueue.Execute(_paramQueue);
+          #endregion
+
+          #region Message Broker Notification
           NotificationRequest getNotification = new NotificationRequest
           {
             Scenario = "T001",
             Id = getPaymentMessage.IdBookingTicket
           };
 
-          SendQueueRequest _paramQueue = new SendQueueRequest
+          SendQueueRequest _paramQueueNotification = new SendQueueRequest
           {
             Message = JsonSerializer.Serialize(getNotification),
             Scenario = "Notification",
             QueueName = "notification"
           };
 
-          _emailQueue.Execute(_paramQueue);
+          _emailQueue.Execute(_paramQueueNotification);
           #endregion
         }
 
@@ -91,24 +108,42 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
           await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        //#region MessageBroker
-        //BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
-        //{
-        //  IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
-        //  Status = BookingOrderStatus.failed,
-        //};
+        #region Message Broker
+        BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
+        {
+          IdBookingTicketBroker = getPaymentMessage.IdBookingTicket,
+          Status = BookingOrderStatus.failed,
+          OrderCode = getPaymentMessage.OrderCode,
+          Note = ex.Message,
+        };
 
-        //SendQueueRequest _paramQueue = new SendQueueRequest
-        //{
-        //  Message = JsonSerializer.Serialize(getBookingFeedback),
-        //  Scenario = "BookingFeedback",
-        //  QueueName = "bookingfeedback"
-        //};
+        SendQueueRequest _paramQueue = new SendQueueRequest
+        {
+          Message = JsonSerializer.Serialize(getBookingFeedback),
+          Scenario = "BookingFeedback",
+          QueueName = "bookingfeedback",
+        };
+        _emailQueue.Execute(_paramQueue);
+        #endregion
 
-        //_emailQueue.Execute(_paramQueue);
-        //#endregion
+        #region Message Broker Notification
+        NotificationRequest getNotification = new NotificationRequest
+        {
+          Scenario = "T002",
+          Id = getPaymentMessage.IdBookingTicket
+        };
 
-        return false;
+        SendQueueRequest _paramQueueNotification = new SendQueueRequest
+        {
+          Message = JsonSerializer.Serialize(getNotification),
+          Scenario = "Notification",
+          QueueName = "notification"
+        };
+
+        _emailQueue.Execute(_paramQueueNotification);
+        #endregion
+
+        return true;
       }
     }
   }

@@ -93,6 +93,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
         {
           IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
           Status = BookingOrderStatus.failed,
+          Note = ex.Message,
         };
 
         SendQueueRequest _paramQueue = new SendQueueRequest
@@ -105,7 +106,7 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
         _emailQueue.Execute(_paramQueue);
         #endregion
 
-        return false;
+        return true;
       }
     }
   }
