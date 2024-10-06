@@ -56,20 +56,6 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
           await dbContext.InsertAsync(newBooking, cancellationToken);
           await dbContext.SaveChangesAsync(cancellationToken);
 
-          #region
-          //var apiKey = "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";
-          //var client = new SendGridClient(apiKey);
-          //var from = new EmailAddress("wardah@radyalabs.id", "Example User");
-          //var subject = "Sending with SendGrid is Fun";
-          //var to = new EmailAddress("wardah.rose123@gmail.com", "Example User");
-          //var plainTextContent = "and easy to do anywhere, even with C#";
-          //var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
-          //var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-          //var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
-          //var coba = "";
-          #endregion
-
-
           #region MessageBroker
           NotificationRequest getNotification = new NotificationRequest
           {

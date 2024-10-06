@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Persistence.Postgres.Configurations
 {
-  public class BankConfiguration : BaseEntityConfiguration<MsBank>
+  public class MsTemplateConfiguration : BaseEntityConfiguration<MsTemplate>
   {
-    protected override void EntityConfiguration(EntityTypeBuilder<MsBank> builder)
+    protected override void EntityConfiguration(EntityTypeBuilder<MsTemplate> builder)
     {
-      builder.Property(e => e.Name).HasMaxLength(100);
+      builder.Property(e => e.Code).HasMaxLength(100);
+      builder.Property(e => e.Subject).HasMaxLength(100);
+      builder.Property(e => e.TextContent).HasMaxLength(512);
     }
   }
 }

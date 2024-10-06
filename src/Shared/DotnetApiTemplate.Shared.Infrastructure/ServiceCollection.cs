@@ -22,6 +22,12 @@ public static class ServiceCollection
     services.AddSingleton(appOptions);
   }
 
+  public static void AddSendGridConfiguration(this IServiceCollection services)
+  {
+    var appOptions = services.GetOptions<SendGridConfiguration>("SendGridConfiguration");
+    services.AddSingleton(appOptions);
+  }
+
   public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
   {
     using var serviceProvider = services.BuildServiceProvider();

@@ -3,6 +3,7 @@ using System;
 using DotnetApiTemplate.Persistence.Postgres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DotnetApiTemplate.Persistence.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241006060312_addTempalte")]
+    partial class addTempalte
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -405,6 +408,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("HTMLContent")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
@@ -440,6 +444,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("TextContent")
+                        .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
 

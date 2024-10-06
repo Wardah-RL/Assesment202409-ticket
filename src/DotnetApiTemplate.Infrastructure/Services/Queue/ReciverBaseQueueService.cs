@@ -56,8 +56,8 @@ namespace DotnetApiTemplate.Infrastructure.Services.Queue
             }
 
             //remove queue
-            if (isDeleteQueue)
-              queue.DeleteMessage(message.MessageId, message.PopReceipt);
+            //if (isDeleteQueue)
+            //  queue.DeleteMessage(message.MessageId, message.PopReceipt);
           }
         }
         catch (Exception ex)
