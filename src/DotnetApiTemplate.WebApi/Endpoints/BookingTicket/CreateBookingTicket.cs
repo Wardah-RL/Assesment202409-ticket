@@ -65,7 +65,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
           return BadRequest(Error.Create(_localizer["ticket-booking-sold"], validationResult.Construct()));
 
         if (getEvent.CountTicket < request.CountTicket)
-          return BadRequest(Error.Create(_localizer["ticket-available"] + getEvent.CountTicket + _localizer["ticket"], validationResult.Construct()));
+          return BadRequest(Error.Create(_localizer["ticket-available"] +" "+ getEvent.CountTicket + " " + _localizer["ticket"], validationResult.Construct()));
 
         if(getEvent.StartDate.Date<=request.DateEvent.Date && getEvent.EndDate.Date >= request.DateEvent.Date)
         {
