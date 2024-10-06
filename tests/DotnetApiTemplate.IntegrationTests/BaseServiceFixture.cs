@@ -33,16 +33,16 @@ public abstract class BaseServiceFixture : IAsyncLifetime
         await DbContainer.StartAsync();
 
         Services.AddDefaultInjectedServices();
-        Services.AddDbContext<PostgresDbContext>(x =>
+        Services.AddDbContext<Persistence.Postgres.PostgresDbContext>(x =>
             x.UseNpgsql(DbContainer.GetConnectionString())
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-        Services.AddScoped<IDbContext>(serviceProvider => serviceProvider.GetRequiredService<PostgresDbContext>());
+        Services.AddScoped((Func<IServiceProvider, IDbContext>)(serviceProvider => serviceProvider.GetRequiredService<Persistence.Postgres.PostgresDbContext>()));
 
         var provider = Services.BuildServiceProvider();
 
         using (var scope = provider.CreateScope())
         {
-            var dbContext = scope.ServiceProvider.GetRequiredService<PostgresDbContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<Persistence.Postgres.PostgresDbContext>();
             await dbContext.Database.EnsureCreatedAsync();
             await dbContext.Database.MigrateAsync();
             var rng = scope.ServiceProvider.GetRequiredService<IRng>();

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 public static class AuthConfiguration
 {

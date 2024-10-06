@@ -1,11 +1,11 @@
 ﻿using DotnetApiTemplate.Shared.Abstractions.Encryption;
 using DotnetApiTemplate.Shared.Infrastructure.Encryption;
-using DotnetApiTemplate.WebApi.Scopes;
+using DotnetApiTemplate.WebApi.Ticket.Scopes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class RequiredScopeAttribute : AuthorizeAttribute, IAuthorizationFilter

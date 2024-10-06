@@ -37,13 +37,13 @@ public class CustomWebApplicationFactory : WebApplicationFactory<ApiMarker>, IAs
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IDbContext>();
-            services.RemoveAll<DbContextOptions<PostgresDbContext>>();
-            services.RemoveAll<PostgresDbContext>();
+            services.RemoveAll<DbContextOptions<Persistence.Postgres.PostgresDbContext>>();
+            services.RemoveAll<Persistence.Postgres.PostgresDbContext>();
 
-            services.AddDbContext<PostgresDbContext>(x =>
+            services.AddDbContext<Persistence.Postgres.PostgresDbContext>(x =>
                 x.UseNpgsql(_dbContainer.GetConnectionString())
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-            services.AddScoped<IDbContext>(serviceProvider => serviceProvider.GetRequiredService<PostgresDbContext>());
+            services.AddScoped((Func<IServiceProvider, IDbContext>)(serviceProvider => serviceProvider.GetRequiredService<Persistence.Postgres.PostgresDbContext>()));
         });
     }
 

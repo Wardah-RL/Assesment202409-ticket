@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace DotnetApiTemplate.Shared.Infrastructure.Localization
+namespace DotnetApiTemplate.WebApi.Ticket.Common
 {
     internal class LocalizationHeaderFilter : IOperationFilter
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 public partial class SlugifyParameterTransformer : IOutboundParameterTransformer
 {

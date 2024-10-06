@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 public class AddAuthorizationHeaderOperationFilter : IOperationFilter
 {

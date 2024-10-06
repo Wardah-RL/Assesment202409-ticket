@@ -4,6 +4,7 @@ using DotnetApiTemplate.Infrastructure.AmazonStorage;
 using DotnetApiTemplate.Infrastructure.GoogleStorage;
 using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Persistence.Postgres;
+using DotnetApiTemplate.Persistence.Postgres.Ticket;
 using DotnetApiTemplate.Shared.Abstractions.Encryption;
 using DotnetApiTemplate.Shared.Infrastructure;
 using DotnetApiTemplate.Shared.Infrastructure.Api;
@@ -40,6 +41,7 @@ public static class ServiceCollection
         //use one of these
         //services.AddSqlServerDbContext(configuration, "sqlserver");
         services.AddPostgresDbContext(configuration, "postgres");
+        services.AddPostgresTicketDbContext(configuration, "postgres");
 
         services.AddFileSystemService();
         services.AddJsonSerialization();

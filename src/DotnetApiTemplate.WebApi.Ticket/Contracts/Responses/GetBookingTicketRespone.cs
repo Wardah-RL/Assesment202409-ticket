@@ -1,4 +1,4 @@
-﻿namespace DotnetApiTemplate.WebApi.Contracts.Responses
+﻿namespace DotnetApiTemplate.WebApi.Ticket.Contracts.Responses
 {
   public class GetBookingTicketRespone
   {

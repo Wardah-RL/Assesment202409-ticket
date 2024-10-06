@@ -3,7 +3,7 @@ using DotnetApiTemplate.Shared.Infrastructure.Localization;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 public static class SwaggerConfiguration
 {

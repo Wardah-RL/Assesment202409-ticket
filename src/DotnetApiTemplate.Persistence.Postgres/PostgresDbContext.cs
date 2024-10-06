@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DotnetApiTemplate.Persistence.Postgres;
 
-public class PostgresDbContext : DbContext, IDbContext
+public class PostgresDbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext
 {
     private readonly IContext? _context;
     private readonly IClock _clock;

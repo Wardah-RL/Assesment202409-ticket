@@ -11,13 +11,13 @@ public static class ServiceCollection
 {
     public const string DefaultConfigName = "DefaultConnection";
 
-    public static void AddPostgresDbContext(this IServiceCollection services, IConfiguration configuration,
+    public static void AddPostgresTicketDbContext(this IServiceCollection services, IConfiguration configuration,
         string connStringName = DefaultConfigName)
     {
-        services.AddDbContext<PostgresDbContext>(
+        services.AddDbContext<TicketPostgresDbContext>(
             x => x.UseNpgsql(configuration.GetConnectionString(connStringName))
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-        services.AddScoped<IDbContext>(serviceProvider => serviceProvider.GetRequiredService<PostgresDbContext>());
+        services.AddScoped<IDbContext>(serviceProvider => serviceProvider.GetRequiredService<TicketPostgresDbContext>());
 
         services.AddInitializer<AutoMigrationService>();
     }
@@ -26,10 +26,10 @@ public static class ServiceCollection
         Action<NpgsqlDbContextOptionsBuilder>? action,
         string connStringName = DefaultConfigName)
     {
-        services.AddDbContext<PostgresDbContext>(x =>
+        services.AddDbContext<TicketPostgresDbContext>(x =>
             x.UseNpgsql(configuration.GetConnectionString(connStringName), action)
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-        services.AddScoped<IDbContext>(serviceProvider => serviceProvider.GetRequiredService<PostgresDbContext>());
+        services.AddScoped<IDbContext>(serviceProvider => serviceProvider.GetRequiredService<TicketPostgresDbContext>());
 
         services.AddInitializer<AutoMigrationService>();
     }

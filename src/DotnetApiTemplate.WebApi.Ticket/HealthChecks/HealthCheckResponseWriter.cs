@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace DotnetApiTemplate.WebApi.HealthChecks;
+namespace DotnetApiTemplate.WebApi.Ticket.HealthChecks;
 
 public static class HealthCheckResponseWriter
 {

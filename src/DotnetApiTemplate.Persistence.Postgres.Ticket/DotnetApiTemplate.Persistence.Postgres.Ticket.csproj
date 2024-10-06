@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Shared\DotnetApiTemplate.Shared.Abstractions\DotnetApiTemplate.Shared.Abstractions.csproj" />
     <ProjectReference Include="..\Shared\DotnetApiTemplate.Shared.Infrastructure\DotnetApiTemplate.Shared.Infrastructure.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Configurations\" />
-  </ItemGroup>
 </Project>

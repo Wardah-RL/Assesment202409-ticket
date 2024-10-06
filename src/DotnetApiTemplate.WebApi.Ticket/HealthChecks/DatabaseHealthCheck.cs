@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Diagnostics;
 
-namespace DotnetApiTemplate.WebApi.HealthChecks;
+namespace DotnetApiTemplate.WebApi.Ticket.HealthChecks;
 
 public class DatabaseHealthCheck : IHealthCheck
 {

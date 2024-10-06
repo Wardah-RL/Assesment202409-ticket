@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace DotnetApiTemplate.WebApi.Common
+namespace DotnetApiTemplate.WebApi.Ticket.Common
 {
     public class LocalizationMiddleware : IMiddleware
     {

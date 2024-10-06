@@ -6,10 +6,10 @@ namespace DotnetApiTemplate.Persistence.Postgres.Ticket;
 
 public class AutoMigrationService : IInitializer
 {
-    private readonly PostgresDbContext _dbContext;
+    private readonly TicketPostgresDbContext _dbContext;
     private readonly ILogger<AutoMigrationService> _logger;
 
-    public AutoMigrationService(PostgresDbContext dbContext, ILogger<AutoMigrationService> logger)
+    public AutoMigrationService(TicketPostgresDbContext dbContext, ILogger<AutoMigrationService> logger)
     {
         _dbContext = dbContext;
         _logger = logger;

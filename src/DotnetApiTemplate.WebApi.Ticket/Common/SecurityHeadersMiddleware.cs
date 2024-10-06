@@ -1,4 +1,4 @@
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 public sealed class SecurityHeadersMiddleware
 {

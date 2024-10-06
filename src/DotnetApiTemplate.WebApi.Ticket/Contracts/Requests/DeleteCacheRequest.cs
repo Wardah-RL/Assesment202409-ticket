@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace DotnetApiTemplate.WebApi.Contracts.Requests;
+namespace DotnetApiTemplate.WebApi.Ticket.Contracts.Requests;
 
 public class DeleteCacheRequest
 {

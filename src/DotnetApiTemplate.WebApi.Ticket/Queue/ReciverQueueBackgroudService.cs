@@ -1,5 +1,4 @@
-﻿using Azure.Storage.Queues;
-using DotnetApiTemplate.Core.Abstractions;
+﻿using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Databases;

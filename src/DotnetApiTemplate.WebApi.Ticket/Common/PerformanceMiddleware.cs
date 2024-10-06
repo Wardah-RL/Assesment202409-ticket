@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 internal class PerformanceMiddleware
 {

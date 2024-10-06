@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace DotnetApiTemplate.WebApi.Validators;
+namespace DotnetApiTemplate.WebApi.Ticket.Validators;
 
 public class AsciiOnlyValidator : AbstractValidator<string>
 {

@@ -1,7 +1,7 @@
 ﻿using DotnetApiTemplate.Shared.Abstractions.Helpers;
 using FluentValidation.Results;
 
-namespace DotnetApiTemplate.WebApi.Validators;
+namespace DotnetApiTemplate.WebApi.Ticket.Validators;
 
 public static class ValidationResultWrapper
 {

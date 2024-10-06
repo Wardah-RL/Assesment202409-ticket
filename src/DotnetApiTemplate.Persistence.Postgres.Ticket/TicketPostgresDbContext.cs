@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DotnetApiTemplate.Persistence.Postgres.Ticket;
 
-public class PostgresDbContext : DbContext, IDbContext
+public class TicketPostgresDbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext
 {
     private readonly IContext? _context;
     private readonly IClock _clock;
 
-    public PostgresDbContext(
-        DbContextOptions<PostgresDbContext> options,
+    public TicketPostgresDbContext(
+        DbContextOptions<TicketPostgresDbContext> options,
         IContext? context,
         IClock clock)
         : base(options)
@@ -161,7 +161,7 @@ public class PostgresDbContext : DbContext, IDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PostgresDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TicketPostgresDbContext).Assembly);
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {
             modelBuilder.Entity(entity.Name).HasIndex(nameof(BaseEntity.Id)).HasMethod("hash");

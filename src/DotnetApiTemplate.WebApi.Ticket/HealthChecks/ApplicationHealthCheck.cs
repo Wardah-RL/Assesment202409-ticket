@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace DotnetApiTemplate.WebApi.HealthChecks;
+namespace DotnetApiTemplate.WebApi.Ticket.HealthChecks;
 
 public class ApplicationHealthCheck : IHealthCheck
 {

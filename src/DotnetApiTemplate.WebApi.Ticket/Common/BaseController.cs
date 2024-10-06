@@ -4,7 +4,7 @@ using Mediator;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace DotnetApiTemplate.WebApi.Common;
+namespace DotnetApiTemplate.WebApi.Ticket.Common;
 
 /// <summary>
 /// Represents the base API controller.

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DotnetApiTemplate.WebApi.Scopes;
+namespace DotnetApiTemplate.WebApi.Ticket.Scopes;
 
 public class ScopeManager
 {

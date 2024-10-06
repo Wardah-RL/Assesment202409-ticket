@@ -1,4 +1,4 @@
-﻿namespace DotnetApiTemplate.WebApi;
+﻿namespace DotnetApiTemplate.WebApi.Ticket;
 
 public class ApiMarker
 {
