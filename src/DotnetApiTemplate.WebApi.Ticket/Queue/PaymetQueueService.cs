@@ -5,7 +5,7 @@ using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Domain.Enums;
 using DotnetApiTemplate.Infrastructure.Services;
-using DotnetApiTemplate.Persistence.Postgres.Ticket.Entities;
+using DotnetApiTemplate.Domain.EntitiesTicket;
 using DotnetApiTemplate.Shared.Abstractions.Contexts;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Helpers;
