@@ -48,7 +48,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetApiTemplate.WebApi.Ti
 		{DD08B1AB-B78B-4E98-84DA-73808032D746} = {DD08B1AB-B78B-4E98-84DA-73808032D746}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetApiTemplate.Persistence.Postgres.Ticket", "src\DotnetApiTemplate.Persistence.Postgres.Ticket\DotnetApiTemplate.Persistence.Postgres.Ticket.csproj", "{174BA7A6-1593-4D49-B18E-48378C58272F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetApiTemplate.Persistence.Postgres.Ticket", "src\DotnetApiTemplate.Persistence.Postgres.Ticket\DotnetApiTemplate.Persistence.Postgres.Ticket.csproj", "{174BA7A6-1593-4D49-B18E-48378C58272F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetApiTemplate.Infrastructure.Ticket", "src\DotnetApiTemplate.Infrastructure.Ticket\DotnetApiTemplate.Infrastructure.Ticket.csproj", "{5802B448-3C06-4C87-BC42-5F1E75552C3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +110,10 @@ Global
 		{174BA7A6-1593-4D49-B18E-48378C58272F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{174BA7A6-1593-4D49-B18E-48378C58272F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{174BA7A6-1593-4D49-B18E-48378C58272F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5802B448-3C06-4C87-BC42-5F1E75552C3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5802B448-3C06-4C87-BC42-5F1E75552C3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5802B448-3C06-4C87-BC42-5F1E75552C3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5802B448-3C06-4C87-BC42-5F1E75552C3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{079B79A7-C537-4FC1-9A36-3F58AF02BA88} = {47C6EA51-77CB-4616-8511-B8E6966CFB4E}
 		{5742DE9C-28B6-442D-B512-5E9FAB21F35A} = {EFC05560-E1F1-43C2-9E9E-235353983B2E}
 		{174BA7A6-1593-4D49-B18E-48378C58272F} = {EFC05560-E1F1-43C2-9E9E-235353983B2E}
+		{5802B448-3C06-4C87-BC42-5F1E75552C3B} = {EFC05560-E1F1-43C2-9E9E-235353983B2E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21EF45DE-CFD2-4D70-A3B0-E62D99E0EE5B}
