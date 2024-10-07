@@ -1,6 +1,6 @@
 using DotnetApiTemplate.Core.Abstractions;
-using DotnetApiTemplate.Infrastructure;
-using DotnetApiTemplate.Infrastructure.Services;
+using DotnetApiTemplate.Infrastructure.Ticket;
+using DotnetApiTemplate.Infrastructure.Ticket.Services;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Infrastructure.Api;
 using DotnetApiTemplate.Shared.Infrastructure.Cache;
@@ -20,6 +20,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Diagnostics;
 using System.Globalization;
 using System.Management;
+using DotnetApiTemplate.Infrastructure.Ticket.Services;
 
 var startTime = Stopwatch.GetTimestamp();
 

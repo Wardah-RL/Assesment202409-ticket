@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotnetApiTemplate.Infrastructure\DotnetApiTemplate.Infrastructure.csproj" />
+    <ProjectReference Include="..\DotnetApiTemplate.Infrastructure.Ticket\DotnetApiTemplate.Infrastructure.Ticket.csproj" />
     <ProjectReference Include="..\DotnetApiTemplate.Persistence.Postgres.Ticket\DotnetApiTemplate.Persistence.Postgres.Ticket.csproj" />
     <ProjectReference Include="..\DotnetApiTemplate.Persistence.SqlServer\DotnetApiTemplate.Persistence.SqlServer.csproj" />
   </ItemGroup>

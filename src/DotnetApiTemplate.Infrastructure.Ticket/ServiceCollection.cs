@@ -22,7 +22,7 @@ using DotnetApiTemplate.Infrastructure.Ticket.Services;
 
 [assembly: InternalsVisibleTo("DotnetApiTemplate.UnitTests")]
 
-namespace DotnetApiTemplate.Infrastructure;
+namespace DotnetApiTemplate.Infrastructure.Ticket;
 
 public static class ServiceCollection
 {
@@ -41,7 +41,7 @@ public static class ServiceCollection
 
         //use one of these
         //services.AddSqlServerDbContext(configuration, "sqlserver");
-        services.AddPostgresDbContext(configuration, "postgres");
+        //services.AddPostgresDbContext(configuration, "postgres");
         services.AddPostgresTicketDbContext(configuration, "postgres");
 
         services.AddFileSystemService();

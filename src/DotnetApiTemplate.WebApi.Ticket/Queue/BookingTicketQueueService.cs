@@ -17,6 +17,7 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using DotnetApiTemplate.Infrastructure.Ticket.Services;
 
 namespace DotnetApiTemplate.WebApi.Ticket.Queue
 {

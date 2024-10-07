@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ThirdParty.Json.LitJson;
+using DotnetApiTemplate.Infrastructure.Ticket.Services;
 
 namespace DotnetApiTemplate.WebApi.Ticket.Queue
 {
