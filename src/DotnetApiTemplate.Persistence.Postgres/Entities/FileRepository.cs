@@ -1,7 +1,7 @@
 ﻿using DotnetApiTemplate.Domain.Enums;
 using DotnetApiTemplate.Shared.Abstractions.Entities;
 
-namespace DotnetApiTemplate.Domain.Entities;
+namespace DotnetApiTemplate.Persistence.Postgres.Entities;
 
 public sealed class FileRepository : BaseEntity
 {

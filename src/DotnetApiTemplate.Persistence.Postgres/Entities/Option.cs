@@ -1,6 +1,6 @@
 ﻿using DotnetApiTemplate.Shared.Abstractions.Entities;
 
-namespace DotnetApiTemplate.Domain.Entities;
+namespace DotnetApiTemplate.Persistence.Postgres.Entities;
 
 public sealed class Option : BaseEntity, IEntity
 {

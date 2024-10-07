@@ -1,5 +1,4 @@
-﻿using DotnetApiTemplate.Domain.Entities;
-using DotnetApiTemplate.Shared.Abstractions.Clock;
+﻿using DotnetApiTemplate.Shared.Abstractions.Clock;
 using DotnetApiTemplate.Shared.Abstractions.Contexts;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Entities;

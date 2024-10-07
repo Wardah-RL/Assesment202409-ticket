@@ -1,4 +1,5 @@
-﻿using DotnetApiTemplate.Domain.Entities;
+﻿
+using DotnetApiTemplate.Persistence.Postgres.Entities;
 
 namespace DotnetApiTemplate.Core.Abstractions;
 

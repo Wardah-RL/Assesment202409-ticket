@@ -1,7 +1,7 @@
 ﻿using DotnetApiTemplate.Shared.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DotnetApiTemplate.Domain.Entities;
+namespace DotnetApiTemplate.Persistence.Postgres.Entities;
 
 public sealed class UserDevice : BaseEntity
 {
