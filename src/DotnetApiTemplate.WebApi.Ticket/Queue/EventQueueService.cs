@@ -3,7 +3,6 @@ using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
 using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
-using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Domain.EntitiesTicket;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Helpers;

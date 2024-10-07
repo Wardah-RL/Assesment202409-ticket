@@ -36,7 +36,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
     }
 
     [HttpPost("event")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
         Summary = "Create event API",
         Description = "",

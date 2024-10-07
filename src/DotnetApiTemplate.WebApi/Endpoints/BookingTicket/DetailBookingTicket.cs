@@ -24,7 +24,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
     }
 
     [HttpGet("bookingTicket/{idBookingTicket}")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
         Summary = "Detail booking ticket API",
         Description = "",
@@ -38,6 +38,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
     {
       var bookingTicket = await _dbContext.Set<TrBookingTicket>()
                               .Include(e => e.Event)
+                              .Include(e => e.Payment)
                               .Where(e => e.Id == request.IdBookingTicket)
                               .FirstOrDefaultAsync(cancellationToken);
 
@@ -52,7 +53,10 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
         Status = bookingTicket.Status.ToString(),
         DateEvent = bookingTicket.DateEvent,
         Price = bookingTicket.Event.Price,
-        Total = bookingTicket.Event.Price* bookingTicket.CountTicket
+        Total = bookingTicket.Event.Price* bookingTicket.CountTicket,
+        DatePayment = bookingTicket.Payment.Any()?bookingTicket.Payment.First().CreatedAt.Value.ToString("dd MMM yyyy"):"-",
+        NamaPembayar = bookingTicket.Payment.Any() ? bookingTicket.Payment.FirstOrDefault().NamaPembayar : "-",
+        NoRekening = bookingTicket.Payment.Any()?bookingTicket.Payment.First().NoRekening:"-",
       };
 
       return response;

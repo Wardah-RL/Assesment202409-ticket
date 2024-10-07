@@ -17,37 +17,46 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.WebApi.Endpoints.Queue
 {
-    public class BookingFeedbackQueueService : ReciverBaseQueueService
+  public class BookingFeedbackQueueService : ReciverBaseQueueService
+  {
+    public BookingFeedbackQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider) : base(queueConfiguration, serviceProvider)
     {
-        public BookingFeedbackQueueService(QueueConfiguration queueConfiguration, IServiceProvider serviceProvider) : base(queueConfiguration, serviceProvider)
-        {
-        }
-
-        public async override Task<bool> QueueContent(IDbContext dbContext, CancellationToken cancellationToken, string scenario, SendQueueRequest message)
-        {
-            try
-            {
-                var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketFeedbackQueueRequest>(message.Message);
-
-                var getBookingTicketBroker = await dbContext.Set<TrBookingTicket>()
-                                 .Where(e => e.Id == getBookingMessage.IdBookingTicketBroker)
-                                 .FirstOrDefaultAsync(cancellationToken);
-
-                if (getBookingTicketBroker != null)
-                {
-                    dbContext.AttachEntity(getBookingTicketBroker);
-                    getBookingTicketBroker.Status = getBookingMessage.Status;
-                    getBookingTicketBroker.OrderCode = getBookingMessage.OrderCode;
-
-                    await dbContext.SaveChangesAsync(cancellationToken);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-
-                return false;
-            }
-        }
     }
+
+    public async override Task<bool> QueueContent(IDbContext dbContext, CancellationToken cancellationToken, string scenario, SendQueueRequest message)
+    {
+      try
+      {
+        var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketFeedbackQueueRequest>(message.Message);
+
+        var getBookingTicketBroker = await dbContext.Set<TrBookingTicket>()
+                         .Where(e => e.Id == getBookingMessage.IdBookingTicket)
+                         .FirstOrDefaultAsync(cancellationToken);
+
+        if (getBookingTicketBroker != null)
+        {
+          dbContext.AttachEntity(getBookingTicketBroker);
+          getBookingTicketBroker.Status = getBookingMessage.Status;
+          getBookingTicketBroker.OrderCode = getBookingMessage.OrderCode;
+
+          if (getBookingTicketBroker.Status == BookingOrderStatus.failed)
+          {
+            var getEvent = await dbContext.Set<MsEvent>()
+                         .Where(e => e.Id == getBookingTicketBroker.IdEvent)
+                         .FirstOrDefaultAsync(cancellationToken);
+
+            dbContext.AttachEntity(getEvent);
+            getEvent.CountTicket = getEvent.CountTicket+ getBookingTicketBroker.CountTicket;
+          }
+          await dbContext.SaveChangesAsync(cancellationToken);
+        }
+        return true;
+      }
+      catch (Exception ex)
+      {
+
+        return false;
+      }
+    }
+  }
 }

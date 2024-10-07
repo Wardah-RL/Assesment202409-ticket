@@ -30,6 +30,7 @@ public class CoreInitializer : IInitializer
 
     await AddSuperAdministratorAsync(cancellationToken);
     await AddBank(cancellationToken);
+    await AddTempalte(cancellationToken);
 
     await _dbContext.SaveChangesAsync(cancellationToken);
   }
@@ -69,6 +70,8 @@ public class CoreInitializer : IInitializer
             cancellationToken: cancellationToken))
       return;
 
+    var listBank = await _dbContext.Set<MsBank>().ToListAsync(cancellationToken);
+
     var allBank = new List<MsBank>();
 
     var bank = new List<MsBank>
@@ -80,9 +83,127 @@ public class CoreInitializer : IInitializer
 
     foreach (var item in bank)
     {
-      item.Id = new UuidV7().Value;
-      allBank.Add(item);
-      _dbContext.Insert(item);
+      var dataBank = listBank.FirstOrDefault(x => x.Name == item.Name);
+
+      if (dataBank == null)
+      {
+        item.Id = new UuidV7().Value;
+        allBank.Add(item);
+        _dbContext.Insert(item);
+      }
+    }
+
+    await _dbContext.SaveChangesAsync(cancellationToken);
+  }
+
+  private async Task AddTempalte(CancellationToken cancellationToken)
+  {
+    if (await _dbContext.Set<MsTemplate>().AnyAsync(e => e.Id == Guid.Empty,
+            cancellationToken: cancellationToken))
+      return;
+
+    var listTemplate = await _dbContext.Set<MsTemplate>().ToListAsync(cancellationToken);
+
+    var allTemplate = new List<MsTemplate>();
+
+    var template = new List<MsTemplate>
+    {
+        new() 
+        { 
+          Id = new UuidV7().Value, 
+          Code = "T001", 
+          Subject = "Ordering success", 
+          HTMLContent = @"<html>
+                            <body>
+                              <p>Dear Mr {{recepientName}},</p>
+                              <p>Your ticket has been successfully booked.</p>
+                              <br>
+                              <table>
+                                <tr>
+                                  <td>Event Name</td>
+                                  <td>:</td>
+                                  <td>{{event}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Date</td>
+                                  <td>:</td>
+                                  <td>{{date}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Count Ticket</td>
+                                  <td>:</td>
+                                  <td>{{countTicket}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Price</td>
+                                  <td>:</td>
+                                  <td>{{price}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Total</td>
+                                  <td>:</td>
+                                  <td>{{total}}</td>
+                                </tr>
+                              </table>
+                            </body>
+                          </html>", 
+          TextContent = "", 
+          IsHtml = true
+        },
+        new()
+        {
+          Id = new UuidV7().Value,
+          Code = "T002",
+          Subject = "Ordering failed",
+          HTMLContent = @"<html>
+                            <body>
+                              <p>Dear Mr {{recepientName}},</p>
+                              <p>Your ticket has failed to be booked.</p>
+                              <br>
+                              <table>
+                                <tr>
+                                  <td>Event Name</td>
+                                  <td>:</td>
+                                  <td>{{event}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Date</td>
+                                  <td>:</td>
+                                  <td>{{date}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Count Ticket</td>
+                                  <td>:</td>
+                                  <td>{{countTicket}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Price</td>
+                                  <td>:</td>
+                                  <td>{{price}}</td>
+                                </tr>
+                                <tr>
+                                  <td>Total</td>
+                                  <td>:</td>
+                                  <td>{{total}}</td>
+                                </tr>
+                              </table>
+                            </body>
+                          </html>",
+          TextContent = "",
+          IsHtml = true
+        },
+    };
+
+    foreach (var item in template)
+    {
+      var dataTemplate = listTemplate.FirstOrDefault(x => x.Code == item.Code);
+
+      if (dataTemplate == null)
+      {
+        item.Id = new UuidV7().Value;
+        allTemplate.Add(item);
+        _dbContext.Insert(item);
+      }
     }
 
     await _dbContext.SaveChangesAsync(cancellationToken);

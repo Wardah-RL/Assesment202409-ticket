@@ -38,7 +38,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
     }
 
     [HttpPost("bookingTicket")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
         Summary = "Create booking ticket API",
         Description = "",
@@ -106,7 +106,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
                  Email = e.User.Email,
                  Name = e.User.FullName,
                  Phone = e.User.Phone,
-                 IdBookingTicketBroker = e.Id,
+                 IdBookingTicket = e.Id,
                  DateEvent = e.DateEvent,
                })
                .FirstOrDefaultAsync(cancellationToken);

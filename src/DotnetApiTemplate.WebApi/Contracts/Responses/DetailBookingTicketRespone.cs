@@ -9,5 +9,8 @@
     public DateTime DateEvent { get; set; }
     public int Price { get; set; }
     public int Total { get; set; }
+    public string NamaPembayar { get; set; } = string.Empty;
+    public string NoRekening { get; set; } = string.Empty;
+    public string DatePayment { get; set; } = string.Empty;
   }
 }

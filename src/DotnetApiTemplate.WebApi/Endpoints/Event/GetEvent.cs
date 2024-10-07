@@ -26,7 +26,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
     }
 
     [HttpGet("event")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
        Summary = "Get event API",
        Description = "",

@@ -2,7 +2,6 @@
 using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Infrastructure.Ticket.AmazonStorage;
 using DotnetApiTemplate.Infrastructure.Ticket.GoogleStorage;
-using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Persistence.Postgres;
 using DotnetApiTemplate.Persistence.Postgres.Ticket;
 using DotnetApiTemplate.Shared.Abstractions.Encryption;

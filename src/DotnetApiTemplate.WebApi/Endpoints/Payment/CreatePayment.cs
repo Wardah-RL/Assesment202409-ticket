@@ -1,6 +1,7 @@
 ﻿using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
+using DotnetApiTemplate.Domain.Enums;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Helpers;
 using DotnetApiTemplate.WebApi.Endpoints.Event.Request;
@@ -8,6 +9,7 @@ using DotnetApiTemplate.WebApi.Endpoints.Event.Validator;
 using DotnetApiTemplate.WebApi.Endpoints.Payment.Request;
 using DotnetApiTemplate.WebApi.Endpoints.Payment.Validator;
 using DotnetApiTemplate.WebApi.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -31,7 +33,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment
     }
 
     [HttpPost("payment")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
         Summary = "Create payment API",
         Description = "",
@@ -56,6 +58,9 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment
       if(bookingTicket == null)
         return BadRequest(Error.Create(_localizer["booking-ticket-not-found"], validationResult.Construct()));
 
+      _dbContext.AttachEntity(bookingTicket);
+      bookingTicket.Status = BookingOrderStatus.Payment;
+
       var total = bookingTicket.CountTicket * bookingTicket.Event.Price;
 
       if(total !=request.TotalPayment)
@@ -67,7 +72,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment
         IdBookingTicket = request.IdBookingTicket,
         IdBank = request.IdBank,
         TotalPayment = request.TotalPayment,
-        NamaPengirim = request.NamaPengirim,
+        NamaPembayar = request.NamaPembayar,
         NoRekening = request.NoRekening,
       };
 
@@ -81,7 +86,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment
                {
                  IdBookingTicket = e.IdBookingTicket,
                  Bank = e.Bank.Name,
-                 NamaPengirim = e.NamaPengirim,
+                 NamaPengirim = e.NamaPembayar,
                  NoRekening = e.NoRekening,
                  TotalPayment = e.TotalPayment,
                  OrderCode = e.BookingTicket.OrderCode.Value

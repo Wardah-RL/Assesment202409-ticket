@@ -10,7 +10,7 @@ namespace DotnetApiTemplate.Core.Models.Queue
   public class BookingTicketQueueRequest
   {
     public Guid IdEvent { get; set; }
-    public Guid IdBookingTicketBroker { get; set; }
+    public Guid IdBookingTicket { get; set; }
     public string Name {  get; set; } = string.Empty;
     public string? Email { get; set; }
     public string? Phone { get; set; }

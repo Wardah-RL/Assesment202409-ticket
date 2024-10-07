@@ -9,7 +9,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment.Validator
     public CreatePaymentValidator()
     {
       RuleFor(e => e.TotalPayment).NotNull().NotEmpty();
-      RuleFor(e => e.NamaPengirim).NotNull().NotEmpty();
+      RuleFor(e => e.NamaPembayar).NotNull().NotEmpty();
       RuleFor(e => e.NoRekening).NotNull().NotEmpty();
     }
   }

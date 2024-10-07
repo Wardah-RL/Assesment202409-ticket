@@ -28,7 +28,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
     }
 
     [HttpDelete("event/{idEvent}")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
         Summary = "Delete event API",
         Description = "",
@@ -42,7 +42,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
         CancellationToken cancellationToken = new())
     {
       var getEventBroker = await _dbContext.Set<MsEvent>()
-                      .Include(e=>e.BookingBroker)
+                      .Include(e=>e.BookingTiket)
                       .Where(e => e.Id == request.IdEvent)
                       .FirstOrDefaultAsync(cancellationToken);
 

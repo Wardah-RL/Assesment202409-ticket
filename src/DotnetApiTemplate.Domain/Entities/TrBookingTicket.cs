@@ -24,5 +24,6 @@ namespace DotnetApiTemplate.Domain.Entities
     public string? Note { get; set; }
     public Guid? OrderCode {  get; set; }
     public DateTime DateEvent {  get; set; }
+    public ICollection<TrPayment> Payment { get; set; } = new HashSet<TrPayment>();
   }
 }

@@ -8,7 +8,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment.Request
     public Guid IdBookingTicket { get; set; }
     public Guid IdBank { get; set; }
     public int TotalPayment { get; set; }
-    public string NamaPengirim { get; set; } = string.Empty;
+    public string NamaPembayar { get; set; } = string.Empty;
     public string NoRekening { get; set; } = string.Empty;
   }
 }

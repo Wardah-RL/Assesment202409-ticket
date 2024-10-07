@@ -13,7 +13,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Configurations
   {
     protected override void EntityConfiguration(EntityTypeBuilder<TrPayment> builder)
     {
-      builder.Property(e => e.NamaPengirim).HasMaxLength(256);
+      builder.Property(e => e.NamaPembayar).HasMaxLength(256);
       builder.Property(e => e.NoRekening).HasMaxLength(50);
     }
   }

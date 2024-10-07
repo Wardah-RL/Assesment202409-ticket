@@ -18,7 +18,7 @@ namespace DotnetApiTemplate.Domain.Entities
     public Guid IdBank { get; set; }
     public MsBank? Bank { get; set; }
     public int TotalPayment { get; set; }
-    public string NamaPengirim { get; set; } = string.Empty;
+    public string NamaPembayar { get; set; } = string.Empty;
     public string NoRekening { get; set; } = string.Empty;
   }
 }

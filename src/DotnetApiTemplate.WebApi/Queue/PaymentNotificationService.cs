@@ -1,6 +1,7 @@
 ﻿using DotnetApiTemplate.Core.Models.Notification;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
+using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Infrastructure.Ticket.Services;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Models;

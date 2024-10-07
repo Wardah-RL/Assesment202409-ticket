@@ -3,6 +3,7 @@ using System;
 using DotnetApiTemplate.Persistence.Postgres.Ticket;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DotnetApiTemplate.Persistence.Postgres.Ticket.Migrations
 {
     [DbContext(typeof(TicketPostgresDbContext))]
-    partial class TicketPostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241007111614_UpdateTrPaymet")]
+    partial class UpdateTrPaymet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

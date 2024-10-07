@@ -32,7 +32,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
     }
 
     [HttpPut("event")]
-    //[Authorize]
+    [Authorize]
     [SwaggerOperation(
         Summary = "Update event API",
         Description = "",

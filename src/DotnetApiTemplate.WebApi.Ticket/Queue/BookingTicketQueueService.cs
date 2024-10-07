@@ -3,7 +3,6 @@ using Azure.Storage.Queues;
 using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Enums;
-using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Domain.EntitiesTicket;
 using DotnetApiTemplate.Shared.Abstractions.Contexts;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
@@ -58,7 +57,7 @@ namespace DotnetApiTemplate.WebApi.Ticket.Queue
                         CountTicket = getBookingMessage.CountTicket,
                         phone = getBookingMessage.Phone,
                         Status = BookingOrderStatus.Ordered,
-                        IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+                        IdBookingTicketBroker = getBookingMessage.IdBookingTicket,
                         IdEvent = getBookingMessage.IdEvent,
                         DateEvent = getBookingMessage.DateEvent,
                     };
@@ -68,7 +67,7 @@ namespace DotnetApiTemplate.WebApi.Ticket.Queue
                     #region MessageBroker
                     BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
                     {
-                        IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+                      IdBookingTicket = getBookingMessage.IdBookingTicket,
                         Status = newBooking.Status,
                         OrderCode = newBooking.Id,
                     };
@@ -93,7 +92,7 @@ namespace DotnetApiTemplate.WebApi.Ticket.Queue
 
                 BookingTicketFeedbackQueueRequest getBookingFeedback = new BookingTicketFeedbackQueueRequest
                 {
-                    IdBookingTicketBroker = getBookingMessage.IdBookingTicketBroker,
+                  IdBookingTicket = getBookingMessage.IdBookingTicket,
                     Status = BookingOrderStatus.failed,
                     Note = ex.Message,
                 };
