@@ -1,4 +1,4 @@
-﻿using DotnetApiTemplate.Persistence.Postgres.Entities;
+﻿using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

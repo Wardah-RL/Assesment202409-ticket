@@ -1,8 +1,9 @@
-﻿using DotnetApiTemplate.Domain.Extensions;
+﻿using DotnetApiTemplate.Domain.Entities;
+using DotnetApiTemplate.Domain.Extensions;
 using DotnetApiTemplate.Shared.Abstractions.Clock;
 using DotnetApiTemplate.Shared.Abstractions.Encryption;
 
-namespace DotnetApiTemplate.Persistence.Postgres.Entities;
+namespace DotnetApiTemplate.Domain;
 
 public static class DefaultUser
 {

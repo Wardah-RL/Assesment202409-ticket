@@ -1,7 +1,7 @@
 ﻿using DotnetApiTemplate.Shared.Abstractions.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DotnetApiTemplate.Persistence.Postgres.Entities;
+namespace DotnetApiTemplate.Domain.Entities;
 
 public sealed class UserRole : BaseEntity, IEntity
 {

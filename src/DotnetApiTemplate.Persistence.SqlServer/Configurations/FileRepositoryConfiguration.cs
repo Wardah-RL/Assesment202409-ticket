@@ -1,23 +1,23 @@
-﻿//using DotnetApiTemplate.Persistence.Postgres.Entities;
-//using DotnetApiTemplate.Shared.Abstractions.Entities;
-//using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using DotnetApiTemplate.Domain.Entities;
+using DotnetApiTemplate.Shared.Abstractions.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-//namespace DotnetApiTemplate.Persistence.SqlServer.Configurations;
+namespace DotnetApiTemplate.Persistence.SqlServer.Configurations;
 
-//public class FileRepositoryConfiguration : BaseEntityConfiguration<FileRepository>
-//{
-//    protected override void EntityConfiguration(EntityTypeBuilder<FileRepository> builder)
-//    {
-//        builder.Property(e => e.FileName).HasMaxLength(256);
+public class FileRepositoryConfiguration : BaseEntityConfiguration<FileRepository>
+{
+    protected override void EntityConfiguration(EntityTypeBuilder<FileRepository> builder)
+    {
+        builder.Property(e => e.FileName).HasMaxLength(256);
 
-//        builder.Property(e => e.UniqueFileName).HasMaxLength(256);
+        builder.Property(e => e.UniqueFileName).HasMaxLength(256);
 
-//        builder.Property(e => e.FileExtension).HasMaxLength(256);
+        builder.Property(e => e.FileExtension).HasMaxLength(256);
 
-//        builder.Property(e => e.Source).HasMaxLength(256);
+        builder.Property(e => e.Source).HasMaxLength(256);
 
-//        builder.Property(e => e.Note).HasMaxLength(512);
+        builder.Property(e => e.Note).HasMaxLength(512);
 
-//        builder.HasIndex(e => e.UniqueFileName).IsUnique();
-//    }
-//}
+        builder.HasIndex(e => e.UniqueFileName).IsUnique();
+    }
+}

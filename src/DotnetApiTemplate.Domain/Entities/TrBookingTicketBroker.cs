@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotnetApiTemplate.Persistence.Postgres.Entities
+namespace DotnetApiTemplate.Domain.Entities
 {
   public class TrBookingTicketBroker : BaseEntity
   {

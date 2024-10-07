@@ -41,7 +41,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotnetApiTemplate.Domain\DotnetApiTemplate.Domain.csproj" />
-    <ProjectReference Include="..\DotnetApiTemplate.Persistence.Postgres\DotnetApiTemplate.Persistence.Postgres.csproj" />
   </ItemGroup>
 
 </Project>
