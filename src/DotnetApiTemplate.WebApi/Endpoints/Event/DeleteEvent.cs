@@ -41,7 +41,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
         DeleteEventRequest request,
         CancellationToken cancellationToken = new())
     {
-      var getEventBroker = await _dbContext.Set<MsEventBroker>()
+      var getEventBroker = await _dbContext.Set<MsEvent>()
                       .Include(e=>e.BookingBroker)
                       .Where(e => e.Id == request.IdEvent)
                       .FirstOrDefaultAsync(cancellationToken);
@@ -49,8 +49,8 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
       if (getEventBroker == null)
         return BadRequest(Error.Create(string.Format(_localizer["event-not-found"], request.IdEvent)));
 
-      var getBookingTicketBroker = await _dbContext.Set<TrBookingTicketBroker>()
-                      .Where(e => e.IdEventBroker == request.IdEvent)
+      var getBookingTicketBroker = await _dbContext.Set<TrBookingTicket>()
+                      .Where(e => e.IdEvent == request.IdEvent)
                       .ToListAsync(cancellationToken);
 
       if (getBookingTicketBroker.Any())

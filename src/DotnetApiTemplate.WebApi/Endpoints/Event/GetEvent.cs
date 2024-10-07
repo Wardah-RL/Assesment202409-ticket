@@ -38,7 +38,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
     public override async Task<ActionResult<PagedList<GetEventResponse>>> HandleAsync([FromQuery] GetAllMenuPaginatedRequest request,
         CancellationToken cancellationToken = new())
     {
-      var queryable = _dbContext.Set<MsEventBroker>()
+      var queryable = _dbContext.Set<MsEvent>()
                       .AsQueryable();
 
       var totalRows = await queryable.CountAsync(cancellationToken);

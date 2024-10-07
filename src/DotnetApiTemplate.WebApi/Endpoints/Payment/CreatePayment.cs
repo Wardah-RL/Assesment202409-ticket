@@ -48,23 +48,23 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment
       if (!validationResult.IsValid)
         return BadRequest(Error.Create(_localizer["invalid-parameter"], validationResult.Construct()));
 
-      var bookingTicket = await _dbContext.Set<TrBookingTicketBroker>()
-                                    .Include(e => e.EventBroker)
-                                    .Where(e => e.Id == request.IdBookingTicketBroker)
+      var bookingTicket = await _dbContext.Set<TrBookingTicket>()
+                                    .Include(e => e.Event)
+                                    .Where(e => e.Id == request.IdBookingTicket)
                                     .FirstOrDefaultAsync(cancellationToken);
 
       if(bookingTicket == null)
         return BadRequest(Error.Create(_localizer["booking-ticket-not-found"], validationResult.Construct()));
 
-      var total = bookingTicket.CountTicket * bookingTicket.EventBroker.Price;
+      var total = bookingTicket.CountTicket * bookingTicket.Event.Price;
 
       if(total !=request.TotalPayment)
         return BadRequest(Error.Create(_localizer["total-payment-is-not-same"], validationResult.Construct()));
 
-      var newEventBroker = new TrPaymentBroker
+      var newEventBroker = new TrPayment
       {
         Id = new UuidV7().Value,
-        IdBookingTicketBroker = request.IdBookingTicketBroker,
+        IdBookingTicket = request.IdBookingTicket,
         IdBank = request.IdBank,
         TotalPayment = request.TotalPayment,
         NamaPengirim = request.NamaPengirim,
@@ -75,16 +75,16 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Payment
       await _dbContext.SaveChangesAsync(cancellationToken);
 
       #region MessageBroker
-      var getEventBroker = await _dbContext.Set<TrPaymentBroker>()
+      var getEventBroker = await _dbContext.Set<TrPayment>()
                .Where(e => e.Id == newEventBroker.Id)
                .Select(e => new PaymentMessageQueueRequest
                {
-                 IdBookingTicket = e.IdBookingTicketBroker,
+                 IdBookingTicket = e.IdBookingTicket,
                  Bank = e.Bank.Name,
                  NamaPengirim = e.NamaPengirim,
                  NoRekening = e.NoRekening,
                  TotalPayment = e.TotalPayment,
-                 OrderCode = e.BookingTicketBroker.OrderCode.Value
+                 OrderCode = e.BookingTicket.OrderCode.Value
                })
                .FirstOrDefaultAsync(cancellationToken);
 

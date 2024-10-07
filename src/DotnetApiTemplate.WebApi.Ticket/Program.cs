@@ -36,7 +36,6 @@ builder.Services.AddSingleton<ISendQueue, SendQueueService>();
 builder.Services.AddSingleton<IReciverQueue, EventQueueService>();
 builder.Services.AddSingleton<IReciverQueue, BookingTicketQueueService>();
 builder.Services.AddSingleton<IReciverQueue, PaymetQueueService>();
-builder.Services.AddSingleton<IReciverQueue, PaymentNotificationService>();
 builder.Services.AddSwaggerGen2();
 builder.Services.AddAuth();
 builder.Services.AddGlobalExceptionHandler();
@@ -45,7 +44,6 @@ builder.Services.AddHostedService<ReciverQueueBackgroudService>();
 builder.Services.AddTransient<EventQueueService>();
 builder.Services.AddTransient<BookingTicketQueueService>();
 builder.Services.AddTransient<PaymetQueueService>();
-builder.Services.AddTransient<PaymentNotificationService>();
 
 //builder.Services.AddRedisCache(builder.Configuration);
 builder.Services.AddInternalMemoryCache();

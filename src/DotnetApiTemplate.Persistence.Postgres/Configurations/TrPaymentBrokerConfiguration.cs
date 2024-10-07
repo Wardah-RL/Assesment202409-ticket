@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Persistence.Postgres.Configurations
 {
-  public class TrPaymentBrokerConfiguration : BaseEntityConfiguration<TrPaymentBroker>
+  public class TrPaymentBrokerConfiguration : BaseEntityConfiguration<TrPayment>
   {
-    protected override void EntityConfiguration(EntityTypeBuilder<TrPaymentBroker> builder)
+    protected override void EntityConfiguration(EntityTypeBuilder<TrPayment> builder)
     {
       builder.Property(e => e.NamaPengirim).HasMaxLength(256);
       builder.Property(e => e.NoRekening).HasMaxLength(50);

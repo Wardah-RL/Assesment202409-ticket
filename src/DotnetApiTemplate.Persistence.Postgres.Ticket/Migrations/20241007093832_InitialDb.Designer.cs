@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DotnetApiTemplate.Persistence.Postgres.Ticket.Migrations
 {
     [DbContext(typeof(TicketPostgresDbContext))]
-    [Migration("20241007080944_InitialDb")]
+    [Migration("20241007093832_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />

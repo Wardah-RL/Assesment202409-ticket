@@ -1,7 +1,6 @@
 ﻿using DotnetApiTemplate.Core.Models.Notification;
 using DotnetApiTemplate.Core.Models.Queue;
 using DotnetApiTemplate.Domain.Entities;
-using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Infrastructure.Ticket.Services;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Models;
@@ -11,7 +10,7 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading;
 
-namespace DotnetApiTemplate.WebApi.Ticket.Queue
+namespace DotnetApiTemplate.WebApi.Queue
 {
     public class PaymentNotificationService : NotificationService
   {
@@ -25,9 +24,9 @@ namespace DotnetApiTemplate.WebApi.Ticket.Queue
     protected async override Task Prepare(IDbContext dbContext, CancellationToken cancellationToken, NotificationRequest request)
     {
 
-      var getBookingTicket = await dbContext.Set<TrBookingTicketBroker>()
+      var getBookingTicket = await dbContext.Set<TrBookingTicket>()
                               .Include(e=>e.User)
-                              .Include(e=>e.EventBroker)
+                              .Include(e=>e.Event)
                               .Where(e => e.Id == request.Id)
                               .FirstOrDefaultAsync(cancellationToken);
 
@@ -36,11 +35,11 @@ namespace DotnetApiTemplate.WebApi.Ticket.Queue
 
       _notificationData = new Dictionary<string, object>
                             {
-                                { "event", getBookingTicket.EventBroker.Name },
+                                { "event", getBookingTicket.Event.Name },
                                 { "date", getBookingTicket.DateEvent.ToString("dd MMM yyyy")},
                                 { "countTicket", getBookingTicket.CountTicket},
-                                { "price", getBookingTicket.EventBroker.Price },
-                                { "total", (getBookingTicket.CountTicket * getBookingTicket.EventBroker.Price) }
+                                { "price", getBookingTicket.Event.Price },
+                                { "total", (getBookingTicket.CountTicket * getBookingTicket.Event.Price) }
                             };
 
       Recepient = new List<Guid>()

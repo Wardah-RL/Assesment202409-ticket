@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Domain.Entities
 {
-  public class TrPaymentBroker : BaseEntity
+  public class TrPayment : BaseEntity
   {
-    [ForeignKey(nameof(BookingTicketBroker))]
-    public Guid IdBookingTicketBroker { get; set; }
-    public TrBookingTicketBroker? BookingTicketBroker { get; set; }
+    [ForeignKey(nameof(BookingTicket))]
+    public Guid IdBookingTicket { get; set; }
+    public TrBookingTicket? BookingTicket { get; set; }
 
     [ForeignKey(nameof(Bank))]
     public Guid IdBank { get; set; }

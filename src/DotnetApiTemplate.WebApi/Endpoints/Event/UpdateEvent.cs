@@ -49,7 +49,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
       if (!validationResult.IsValid)
         return BadRequest(Error.Create(_localizer["invalid-parameter"], validationResult.Construct()));
 
-      var getEventBroker = await _dbContext.Set<MsEventBroker>()
+      var getEventBroker = await _dbContext.Set<MsEvent>()
                               .Where(e => e.Id == request.IdEvent)
                               .FirstOrDefaultAsync(cancellationToken);
 
@@ -67,7 +67,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Event
       await _dbContext.SaveChangesAsync(cancellationToken);
 
       #region MessageBroker
-      var getEventBrokerMessage = await _dbContext.Set<MsEventBroker>()
+      var getEventBrokerMessage = await _dbContext.Set<MsEvent>()
                                   .Where(e => e.Id == getEventBroker.Id)
                                   .Select(e => new EventMessageQueueRequest
                                   {

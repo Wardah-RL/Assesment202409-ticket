@@ -69,7 +69,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MsEventBroker",
+                name: "MsEvent",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -94,7 +94,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MsEventBroker", x => x.Id);
+                    table.PrimaryKey("PK_MsEvent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,11 +245,11 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrBookingTicketBroker",
+                name: "TrBookingTicket",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdEventBroker = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdEvent = table.Column<Guid>(type: "uuid", nullable: false),
                     IdUser = table.Column<Guid>(type: "uuid", nullable: false),
                     CountTicket = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
@@ -271,15 +271,15 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrBookingTicketBroker", x => x.Id);
+                    table.PrimaryKey("PK_TrBookingTicket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrBookingTicketBroker_MsEventBroker_IdEventBroker",
-                        column: x => x.IdEventBroker,
-                        principalTable: "MsEventBroker",
+                        name: "FK_TrBookingTicket_MsEvent_IdEvent",
+                        column: x => x.IdEvent,
+                        principalTable: "MsEvent",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TrBookingTicketBroker_User_IdUser",
+                        name: "FK_TrBookingTicket_User_IdUser",
                         column: x => x.IdUser,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -391,11 +391,11 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrPaymentBroker",
+                name: "TrPayment",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdBookingTicketBroker = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdBookingTicket = table.Column<Guid>(type: "uuid", nullable: false),
                     IdBank = table.Column<Guid>(type: "uuid", nullable: false),
                     TotalPayment = table.Column<int>(type: "integer", nullable: false),
                     NamaPengirim = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
@@ -415,17 +415,17 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrPaymentBroker", x => x.Id);
+                    table.PrimaryKey("PK_TrPayment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrPaymentBroker_MsBank_IdBank",
+                        name: "FK_TrPayment_MsBank_IdBank",
                         column: x => x.IdBank,
                         principalTable: "MsBank",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TrPaymentBroker_TrBookingTicketBroker_IdBookingTicketBroker",
-                        column: x => x.IdBookingTicketBroker,
-                        principalTable: "TrBookingTicketBroker",
+                        name: "FK_TrPayment_TrBookingTicket_IdBookingTicket",
+                        column: x => x.IdBookingTicket,
+                        principalTable: "TrBookingTicket",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -499,34 +499,34 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 column: "LastUpdatedByName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MsEventBroker_CreatedByFullName",
-                table: "MsEventBroker",
+                name: "IX_MsEvent_CreatedByFullName",
+                table: "MsEvent",
                 column: "CreatedByFullName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MsEventBroker_CreatedByName",
-                table: "MsEventBroker",
+                name: "IX_MsEvent_CreatedByName",
+                table: "MsEvent",
                 column: "CreatedByName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MsEventBroker_Id",
-                table: "MsEventBroker",
+                name: "IX_MsEvent_Id",
+                table: "MsEvent",
                 column: "Id")
                 .Annotation("Npgsql:IndexMethod", "hash");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MsEventBroker_LastUpdatedBy",
-                table: "MsEventBroker",
+                name: "IX_MsEvent_LastUpdatedBy",
+                table: "MsEvent",
                 column: "LastUpdatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MsEventBroker_LastUpdatedByFullName",
-                table: "MsEventBroker",
+                name: "IX_MsEvent_LastUpdatedByFullName",
+                table: "MsEvent",
                 column: "LastUpdatedByFullName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MsEventBroker_LastUpdatedByName",
-                table: "MsEventBroker",
+                name: "IX_MsEvent_LastUpdatedByName",
+                table: "MsEvent",
                 column: "LastUpdatedByName");
 
             migrationBuilder.CreateIndex(
@@ -664,85 +664,85 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_CreatedByFullName",
-                table: "TrBookingTicketBroker",
+                name: "IX_TrBookingTicket_CreatedByFullName",
+                table: "TrBookingTicket",
                 column: "CreatedByFullName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_CreatedByName",
-                table: "TrBookingTicketBroker",
+                name: "IX_TrBookingTicket_CreatedByName",
+                table: "TrBookingTicket",
                 column: "CreatedByName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_Id",
-                table: "TrBookingTicketBroker",
+                name: "IX_TrBookingTicket_Id",
+                table: "TrBookingTicket",
                 column: "Id")
                 .Annotation("Npgsql:IndexMethod", "hash");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_IdEventBroker",
-                table: "TrBookingTicketBroker",
-                column: "IdEventBroker");
+                name: "IX_TrBookingTicket_IdEvent",
+                table: "TrBookingTicket",
+                column: "IdEvent");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_IdUser",
-                table: "TrBookingTicketBroker",
+                name: "IX_TrBookingTicket_IdUser",
+                table: "TrBookingTicket",
                 column: "IdUser");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_LastUpdatedBy",
-                table: "TrBookingTicketBroker",
+                name: "IX_TrBookingTicket_LastUpdatedBy",
+                table: "TrBookingTicket",
                 column: "LastUpdatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_LastUpdatedByFullName",
-                table: "TrBookingTicketBroker",
+                name: "IX_TrBookingTicket_LastUpdatedByFullName",
+                table: "TrBookingTicket",
                 column: "LastUpdatedByFullName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrBookingTicketBroker_LastUpdatedByName",
-                table: "TrBookingTicketBroker",
+                name: "IX_TrBookingTicket_LastUpdatedByName",
+                table: "TrBookingTicket",
                 column: "LastUpdatedByName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_CreatedByFullName",
-                table: "TrPaymentBroker",
+                name: "IX_TrPayment_CreatedByFullName",
+                table: "TrPayment",
                 column: "CreatedByFullName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_CreatedByName",
-                table: "TrPaymentBroker",
+                name: "IX_TrPayment_CreatedByName",
+                table: "TrPayment",
                 column: "CreatedByName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_Id",
-                table: "TrPaymentBroker",
+                name: "IX_TrPayment_Id",
+                table: "TrPayment",
                 column: "Id")
                 .Annotation("Npgsql:IndexMethod", "hash");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_IdBank",
-                table: "TrPaymentBroker",
+                name: "IX_TrPayment_IdBank",
+                table: "TrPayment",
                 column: "IdBank");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_IdBookingTicketBroker",
-                table: "TrPaymentBroker",
-                column: "IdBookingTicketBroker");
+                name: "IX_TrPayment_IdBookingTicket",
+                table: "TrPayment",
+                column: "IdBookingTicket");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_LastUpdatedBy",
-                table: "TrPaymentBroker",
+                name: "IX_TrPayment_LastUpdatedBy",
+                table: "TrPayment",
                 column: "LastUpdatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_LastUpdatedByFullName",
-                table: "TrPaymentBroker",
+                name: "IX_TrPayment_LastUpdatedByFullName",
+                table: "TrPayment",
                 column: "LastUpdatedByFullName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrPaymentBroker_LastUpdatedByName",
-                table: "TrPaymentBroker",
+                name: "IX_TrPayment_LastUpdatedByName",
+                table: "TrPayment",
                 column: "LastUpdatedByName");
 
             migrationBuilder.CreateIndex(
@@ -901,7 +901,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 name: "RoleScope");
 
             migrationBuilder.DropTable(
-                name: "TrPaymentBroker");
+                name: "TrPayment");
 
             migrationBuilder.DropTable(
                 name: "UserDevice");
@@ -916,13 +916,13 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                 name: "MsBank");
 
             migrationBuilder.DropTable(
-                name: "TrBookingTicketBroker");
+                name: "TrBookingTicket");
 
             migrationBuilder.DropTable(
                 name: "Role");
 
             migrationBuilder.DropTable(
-                name: "MsEventBroker");
+                name: "MsEvent");
 
             migrationBuilder.DropTable(
                 name: "User");

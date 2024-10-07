@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DotnetApiTemplate.Persistence.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20241007081044_InitialDb")]
+    [Migration("20241007093712_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -203,7 +203,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                     b.ToTable("MsBank");
                 });
 
-            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.MsEventBroker", b =>
+            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.MsEvent", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -288,7 +288,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
 
                     b.HasIndex("LastUpdatedByName");
 
-                    b.ToTable("MsEventBroker");
+                    b.ToTable("MsEvent");
                 });
 
             modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.MsTemplate", b =>
@@ -630,7 +630,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                     b.ToTable("RoleScope");
                 });
 
-            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrBookingTicketBroker", b =>
+            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrBookingTicket", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -659,7 +659,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                     b.Property<DateTime>("DateEvent")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("IdEventBroker")
+                    b.Property<Guid>("IdEvent")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdUser")
@@ -709,7 +709,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Id"), "hash");
 
-                    b.HasIndex("IdEventBroker");
+                    b.HasIndex("IdEvent");
 
                     b.HasIndex("IdUser");
 
@@ -719,10 +719,10 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
 
                     b.HasIndex("LastUpdatedByName");
 
-                    b.ToTable("TrBookingTicketBroker");
+                    b.ToTable("TrBookingTicket");
                 });
 
-            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrPaymentBroker", b =>
+            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrPayment", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -748,7 +748,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                     b.Property<Guid>("IdBank")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdBookingTicketBroker")
+                    b.Property<Guid>("IdBookingTicket")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -800,7 +800,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
 
                     b.HasIndex("IdBank");
 
-                    b.HasIndex("IdBookingTicketBroker");
+                    b.HasIndex("IdBookingTicket");
 
                     b.HasIndex("LastUpdatedBy");
 
@@ -808,7 +808,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
 
                     b.HasIndex("LastUpdatedByName");
 
-                    b.ToTable("TrPaymentBroker");
+                    b.ToTable("TrPayment");
                 });
 
             modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.User", b =>
@@ -1162,11 +1162,11 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrBookingTicketBroker", b =>
+            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrBookingTicket", b =>
                 {
-                    b.HasOne("DotnetApiTemplate.Domain.Entities.MsEventBroker", "EventBroker")
+                    b.HasOne("DotnetApiTemplate.Domain.Entities.MsEvent", "Event")
                         .WithMany("BookingBroker")
-                        .HasForeignKey("IdEventBroker")
+                        .HasForeignKey("IdEvent")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1176,12 +1176,12 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("EventBroker");
+                    b.Navigation("Event");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrPaymentBroker", b =>
+            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.TrPayment", b =>
                 {
                     b.HasOne("DotnetApiTemplate.Domain.Entities.MsBank", "Bank")
                         .WithMany()
@@ -1189,15 +1189,15 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DotnetApiTemplate.Domain.Entities.TrBookingTicketBroker", "BookingTicketBroker")
+                    b.HasOne("DotnetApiTemplate.Domain.Entities.TrBookingTicket", "BookingTicket")
                         .WithMany()
-                        .HasForeignKey("IdBookingTicketBroker")
+                        .HasForeignKey("IdBookingTicket")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Bank");
 
-                    b.Navigation("BookingTicketBroker");
+                    b.Navigation("BookingTicket");
                 });
 
             modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.UserDevice", b =>
@@ -1241,7 +1241,7 @@ namespace DotnetApiTemplate.Persistence.Postgres.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.MsEventBroker", b =>
+            modelBuilder.Entity("DotnetApiTemplate.Domain.Entities.MsEvent", b =>
                 {
                     b.Navigation("BookingBroker");
                 });

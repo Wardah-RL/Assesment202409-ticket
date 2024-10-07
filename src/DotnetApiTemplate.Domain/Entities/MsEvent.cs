@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Domain.Entities
 {
-  public class MsEventBroker : BaseEntity
+  public class MsEvent : BaseEntity
   {
     public string Name { get; set; } = string.Empty!;
     public DateTime StartDate { get; set; }
@@ -15,6 +15,6 @@ namespace DotnetApiTemplate.Domain.Entities
     public int CountTicket { get; set; }
     public string Location { get; set; } = string.Empty;
     public int Price { get; set; }
-    public ICollection<TrBookingTicketBroker> BookingBroker { get; set; } = new HashSet<TrBookingTicketBroker>();
+    public ICollection<TrBookingTicket> BookingBroker { get; set; } = new HashSet<TrBookingTicket>();
   }
 }

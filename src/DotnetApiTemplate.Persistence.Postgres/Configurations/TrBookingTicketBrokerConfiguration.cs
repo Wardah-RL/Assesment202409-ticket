@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace DotnetApiTemplate.Persistence.Postgres.Configurations
 {
 
-  public class TrBookingTicketBrokerConfiguration : BaseEntityConfiguration<TrBookingTicketBroker>
+  public class TrBookingTicketBrokerConfiguration : BaseEntityConfiguration<TrBookingTicket>
   {
-    protected override void EntityConfiguration(EntityTypeBuilder<TrBookingTicketBroker> builder)
+    protected override void EntityConfiguration(EntityTypeBuilder<TrBookingTicket> builder)
     {
       builder.Property(e => e.Note).HasMaxLength(500);
     }

@@ -1,6 +1,5 @@
 ﻿using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
-using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
 using DotnetApiTemplate.Shared.Abstractions.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +36,6 @@ namespace DotnetApiTemplate.WebApi.Ticket.Queue
                     scope.ServiceProvider.GetRequiredService<EventQueueService>().Execute("event");
                     scope.ServiceProvider.GetRequiredService<BookingTicketQueueService>().Execute("bookingticket");
                     scope.ServiceProvider.GetRequiredService<PaymetQueueService>().Execute("payment");
-                    scope.ServiceProvider.GetRequiredService<PaymentNotificationService>().Execute("notification");
                 }
                 await Task.Delay(1000, stoppingToken);
             }

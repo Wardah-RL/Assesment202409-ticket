@@ -36,8 +36,8 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
     public override async Task<ActionResult<DetailBookingTicketRespone>> HandleAsync([FromRoute] DetailBookingTicketRequest request,
         CancellationToken cancellationToken = new())
     {
-      var bookingTicket = await _dbContext.Set<TrBookingTicketBroker>()
-                              .Include(e => e.EventBroker)
+      var bookingTicket = await _dbContext.Set<TrBookingTicket>()
+                              .Include(e => e.Event)
                               .Where(e => e.Id == request.IdBookingTicket)
                               .FirstOrDefaultAsync(cancellationToken);
 
@@ -47,12 +47,12 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
       var response = new DetailBookingTicketRespone
       {
         IdBookingTicket = bookingTicket.Id,
-        NameEvent = bookingTicket.EventBroker.Name,
+        NameEvent = bookingTicket.Event.Name,
         CountTicket = bookingTicket.CountTicket,
         Status = bookingTicket.Status.ToString(),
         DateEvent = bookingTicket.DateEvent,
-        Price = bookingTicket.EventBroker.Price,
-        Total = bookingTicket.EventBroker.Price* bookingTicket.CountTicket
+        Price = bookingTicket.Event.Price,
+        Total = bookingTicket.Event.Price* bookingTicket.CountTicket
       };
 
       return response;

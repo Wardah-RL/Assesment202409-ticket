@@ -29,7 +29,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.Queue
             {
                 var getBookingMessage = JsonConvert.DeserializeObject<BookingTicketFeedbackQueueRequest>(message.Message);
 
-                var getBookingTicketBroker = await dbContext.Set<TrBookingTicketBroker>()
+                var getBookingTicketBroker = await dbContext.Set<TrBookingTicket>()
                                  .Where(e => e.Id == getBookingMessage.IdBookingTicketBroker)
                                  .FirstOrDefaultAsync(cancellationToken);
 

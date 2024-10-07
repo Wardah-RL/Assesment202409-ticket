@@ -3,7 +3,6 @@ using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
 using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
-using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Domain.EntitiesTicket;
 using DotnetApiTemplate.Shared.Abstractions.Databases;
@@ -45,7 +44,7 @@ namespace DotnetApiTemplate.WebApi.Ticket.Queue
                 if (getEvent == null)
                 {
                     //create event
-                    var newEvent = new MsEvent
+                    var newEvent = new Domain.EntitiesTicket.MsEvent
                     {
                         Id = getEventMessage.IdEvent,
                         Name = getEventMessage.Name,

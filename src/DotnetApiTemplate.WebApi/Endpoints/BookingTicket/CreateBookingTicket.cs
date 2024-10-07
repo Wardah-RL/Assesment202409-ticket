@@ -55,7 +55,7 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
       if (!validationResult.IsValid)
         return BadRequest(Error.Create(_localizer["invalid-parameter"], validationResult.Construct()));
 
-      var getEvent = await _dbContext.Set<MsEventBroker>()
+      var getEvent = await _dbContext.Set<MsEvent>()
                             .Where(e => e.Id == request.IdEvent)
                             .FirstOrDefaultAsync(cancellationToken);
 
@@ -82,10 +82,10 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
         getEvent.CountTicket = getEvent.CountTicket - request.CountTicket;
       }
 
-      var newBooking = new TrBookingTicketBroker
+      var newBooking = new TrBookingTicket
       {
         Id = new UuidV7().Value,
-        IdEventBroker = request.IdEvent,
+        IdEvent = request.IdEvent,
         IdUser = request.IdUser,
         CountTicket = request.CountTicket,
         Status = BookingOrderStatus.Processed,
@@ -96,12 +96,12 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
       await _dbContext.SaveChangesAsync(cancellationToken);
 
       #region MessageBroker
-      var getBooking = await _dbContext.Set<TrBookingTicketBroker>()
+      var getBooking = await _dbContext.Set<TrBookingTicket>()
                .Include(e=>e.User)
                .Where(e => e.Id == newBooking.Id)
                .Select(e => new BookingTicketQueueRequest
                {
-                 IdEvent = e.IdEventBroker,
+                 IdEvent = e.IdEvent,
                  CountTicket = e.CountTicket,
                  Email = e.User.Email,
                  Name = e.User.FullName,

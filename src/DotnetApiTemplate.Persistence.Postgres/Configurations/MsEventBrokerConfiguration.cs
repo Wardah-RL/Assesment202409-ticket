@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Persistence.Postgres.Configurations
 {
-  public class MsEventBrokerConfiguration : BaseEntityConfiguration<MsEventBroker>
+  public class MsEventBrokerConfiguration : BaseEntityConfiguration<MsEvent>
   {
-    protected override void EntityConfiguration(EntityTypeBuilder<MsEventBroker> builder)
+    protected override void EntityConfiguration(EntityTypeBuilder<MsEvent> builder)
     {
       builder.Property(e => e.Name).HasMaxLength(256);
       builder.Property(e => e.Location).HasMaxLength(256);

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace DotnetApiTemplate.Domain.Entities
 {
-  public class TrBookingTicketBroker : BaseEntity
+  public class TrBookingTicket : BaseEntity
   {
-    [ForeignKey(nameof(EventBroker))]
-    public Guid IdEventBroker { get; set; }
-    public MsEventBroker? EventBroker { get; set; }
+    [ForeignKey(nameof(Event))]
+    public Guid IdEvent { get; set; }
+    public MsEvent? Event { get; set; }
 
     [ForeignKey(nameof(User))]
     public Guid IdUser { get; set; }

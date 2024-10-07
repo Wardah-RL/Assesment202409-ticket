@@ -42,15 +42,15 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
     public override async Task<ActionResult<PagedList<GetBookingTicketRespone>>> HandleAsync([FromQuery] GetAllMenuPaginatedRequest request,
         CancellationToken cancellationToken = new())
     {
-      var queryable = _dbContext.Set<TrBookingTicketBroker>()
-                      .Include(e=>e.EventBroker)
+      var queryable = _dbContext.Set<TrBookingTicket>()
+                      .Include(e=>e.Event)
                       .Where(e=>e.IdUser== _context!.Identity.Id)
                       .AsQueryable();
 
       var totalRows = await queryable.CountAsync(cancellationToken);
 
       if (!string.IsNullOrWhiteSpace(request.Search) && request.Search.Length > 2)
-        queryable = queryable.Where(e => e.EventBroker.Name.ToLower().Contains(request.Search.ToLower()));
+        queryable = queryable.Where(e => e.Event.Name.ToLower().Contains(request.Search.ToLower()));
 
       if (!string.IsNullOrWhiteSpace(request.OrderBy) && !string.IsNullOrWhiteSpace(request.OrderType))
         queryable = queryable.OrderBy(request.OrderType, request.OrderBy);
@@ -61,11 +61,11 @@ namespace DotnetApiTemplate.WebApi.Endpoints.BookingTicket
           .Select(e => new 
           {
             BookingTicketId = e.Id,
-            NameEvent = e.EventBroker.Name,
+            NameEvent = e.Event.Name,
             Status = e.Status.ToString(),
             CountTicket = e.CountTicket,
             DateEvent = e.DateEvent,
-            Price = e.EventBroker.Price
+            Price = e.Event.Price
           })
           .Skip(request.CalculateSkip())
           .ToList();

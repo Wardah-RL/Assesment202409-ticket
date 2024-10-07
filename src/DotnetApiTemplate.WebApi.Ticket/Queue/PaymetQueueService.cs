@@ -2,7 +2,6 @@
 using Azure.Storage.Queues;
 using DotnetApiTemplate.Core.Abstractions;
 using DotnetApiTemplate.Core.Models.Queue;
-using DotnetApiTemplate.Domain.Entities;
 using DotnetApiTemplate.Domain.Enums;
 using DotnetApiTemplate.Infrastructure.Services;
 using DotnetApiTemplate.Domain.EntitiesTicket;
